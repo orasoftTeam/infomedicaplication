@@ -13,5 +13,6 @@ import lombok.Data;
  */
 public @Data class DepartamentoForms {
     private String nombre;
-    private String edad;
+    private String edad2
+            ;
 }
