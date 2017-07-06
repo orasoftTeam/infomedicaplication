@@ -5,14 +5,17 @@
  */
 package com.infomedic.forms;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+
 
 /**
  *
  * @author LAP
  */
-public @Data class DepartamentoForms {
-    private String nombre;
-    private String edad
-            ;
+public  class DepartamentoForms {
+    private @Setter @Getter  String id;
+    private @Setter @Getter String nombre;
+   
 }
