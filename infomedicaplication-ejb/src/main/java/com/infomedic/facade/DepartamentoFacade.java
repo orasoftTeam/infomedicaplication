@@ -46,14 +46,14 @@ public class DepartamentoFacade extends AbstractFacade<TblDepartamento, Departam
         try {
             if (df == null) {
                 flag = false;
-            } else if (df.getCoddepartamento() == null) {
+            } else if (df.getIddepartamento()== null) {
                 TblDepartamento depto = new TblDepartamento();
-                depto.setCodpais(pais);
+                depto.setIdpais(pais);
                 depto.setNombredepartamento(df.getNombredepartamento().toUpperCase());
                 create(depto);
                 //flag = false;
             } else {
-                TblDepartamento depto = find(new Integer(df.getCoddepartamento()));
+                TblDepartamento depto = find(new BigDecimal(df.getIddepartamento()));
                 depto.setNombredepartamento(df.getNombredepartamento().toUpperCase());
                 edit(depto);
                 //getEntityManager().merge(pais);

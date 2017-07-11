@@ -66,7 +66,7 @@
                     <div id="datatable-single">
                         <p:dataTable id="paisDT" var="pais" value="#{paisController.listaPais}" paginator="true"
                                      paginatorPosition="bottom" 
-                                     selection="#{paisController.pf}" rowKey="#{pais.codpais}" rows="5">
+                                     selection="#{paisController.pf}" rowKey="#{pais.idpais}" rows="5">
                             <f:facet name="header">
                                 #{bundle['lblLista']}
                             </f:facet>

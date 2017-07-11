@@ -6,6 +6,7 @@
 package com.infomedic.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -29,47 +30,49 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author LAP
  */
 @Entity
-@Table(name = "tbl_pais")
+@Table(name = "TBL_PAIS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblPais.findAll", query = "SELECT t FROM TblPais t"),
-    @NamedQuery(name = "TblPais.findByCodpais", query = "SELECT t FROM TblPais t WHERE t.codpais = :codpais"),
+    @NamedQuery(name = "TblPais.findByIdpais", query = "SELECT t FROM TblPais t WHERE t.idpais = :idpais"),
     @NamedQuery(name = "TblPais.findByNombrepais", query = "SELECT t FROM TblPais t WHERE t.nombrepais = :nombrepais")})
 public class TblPais implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "PAIS_SEQ")
-    @SequenceGenerator(name = "PAIS_SEQ", sequenceName = "SQE_IDPAIS", allocationSize = 1)
-    @Basic(optional = false)
-    @Column(name = "codpais")
-    private Integer codpais;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "nombrepais")
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "PAIS_SEQ")
+    @SequenceGenerator(name = "PAIS_SEQ", sequenceName = "SQE_IDPAIS", allocationSize = 1)
+    @Column(name = "IDPAIS")
+    private BigDecimal idpais;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "NOMBREPAIS")
     private String nombrepais;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codpais")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpais")
     private List<TblDepartamento> tblDepartamentoList;
 
     public TblPais() {
     }
 
-    public TblPais(Integer codpais) {
-        this.codpais = codpais;
+    public TblPais(BigDecimal idpais) {
+        this.idpais = idpais;
     }
 
-    public TblPais(Integer codpais, String nombrepais) {
-        this.codpais = codpais;
+    public TblPais(BigDecimal idpais, String nombrepais) {
+        this.idpais = idpais;
         this.nombrepais = nombrepais;
     }
 
-    public Integer getCodpais() {
-        return codpais;
+    public BigDecimal getIdpais() {
+        return idpais;
     }
 
-    public void setCodpais(Integer codpais) {
-        this.codpais = codpais;
+    public void setIdpais(BigDecimal idpais) {
+        this.idpais = idpais;
     }
 
     public String getNombrepais() {
@@ -92,7 +95,7 @@ public class TblPais implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codpais != null ? codpais.hashCode() : 0);
+        hash += (idpais != null ? idpais.hashCode() : 0);
         return hash;
     }
 
@@ -103,7 +106,7 @@ public class TblPais implements Serializable {
             return false;
         }
         TblPais other = (TblPais) object;
-        if ((this.codpais == null && other.codpais != null) || (this.codpais != null && !this.codpais.equals(other.codpais))) {
+        if ((this.idpais == null && other.idpais != null) || (this.idpais != null && !this.idpais.equals(other.idpais))) {
             return false;
         }
         return true;
@@ -111,7 +114,7 @@ public class TblPais implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblPais[ codpais=" + codpais + " ]";
+        return "com.infomedic.entity.TblPais[ idpais=" + idpais + " ]";
     }
     
 }

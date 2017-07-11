@@ -62,7 +62,7 @@
                                 
                             <p:selectOneMenu id="paises" value="#{departamentoController.idPais}"  >
                                     <p:ajax event="change" update="form:deptoDT" listener="#{departamentoController.combochanged}"></p:ajax>
-                                    <f:selectItems var="pais" value="#{departamentoController.listaPais}" itemValue="#{pais.codpais}" itemLabel="#{pais.nombrepais}" ></f:selectItems>
+                                    <f:selectItems var="pais" value="#{departamentoController.listaPais}" itemValue="#{pais.idpais}" itemLabel="#{pais.nombrepais}" ></f:selectItems>
                                 </p:selectOneMenu> 
                         </div>
                         <div class="ui-g-12">
@@ -76,14 +76,14 @@
                     <div id="datatable-single">
                         <p:dataTable id="deptoDT" var="depto" value="#{departamentoController.listaDepartamento}" paginator="true"
                                      paginatorPosition="bottom" 
-                                     selection="#{departamentoController.df}" rowKey="#{depto.coddepartamento}" rows="5">
+                                     selection="#{departamentoController.df}" rowKey="#{depto.iddepartamento}" rows="5">
                             <f:facet name="header">
-                                #{bundle['lblLista']}
+                                #{bundle['lblListaDep']}
                             </f:facet>
                             <p:column selectionMode="single" style="width: 42px" 
                                       styleClass="align-center"
                                       priority="1" />
-                            <p:column headerText="#{bundle['nomDepartamento']}" sortBy="#{depto.nombredepartamento}">
+                            <p:column headerText="#{bundle['nomDepartamento']}" sortBy="#{depto.iddepartamento}">
                                 <h:outputText value="#{depto.nombredepartamento}" />
                             </p:column>
                         </p:dataTable>

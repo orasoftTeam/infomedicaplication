@@ -13,6 +13,6 @@ import lombok.Setter;
  * @author LAP
  */
 public class DepartamentoForm {
-    private @Setter @Getter String coddepartamento;
+    private @Setter @Getter String iddepartamento;
     private @Setter @Getter String nombredepartamento;
 }

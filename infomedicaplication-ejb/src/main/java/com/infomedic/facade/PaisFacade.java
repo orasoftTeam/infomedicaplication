@@ -40,13 +40,13 @@ public class PaisFacade extends AbstractFacade<TblPais, PaisForm> {
         try {
             if (pf == null) {
                 flag = false;
-            } else if (pf.getCodpais() == null) {
+            } else if (pf.getIdpais()== null) {
                 TblPais pais = new TblPais();
                 pais.setNombrepais(pf.getNombrepais().toUpperCase());
                 create(pais);
                 //flag = false;
             } else {
-                TblPais pais = find(new Integer(pf.getCodpais()));
+                TblPais pais = find(new BigDecimal(pf.getIdpais()));
                 pais.setNombrepais(pf.getNombrepais().toUpperCase());
                 edit(pais);
                 //getEntityManager().merge(pais);

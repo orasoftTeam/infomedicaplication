@@ -68,7 +68,7 @@ public class PaisController implements Serializable {
             if (pf == null) {
                 pf=new PaisForm();
                 pf.setNombrepais(nomPais);
-            } else if (!pf.getCodpais().equals("")) {
+            } else if (!pf.getIdpais().equals("")) {
                 pf.setNombrepais(nomPais);
             }
         }
@@ -80,7 +80,7 @@ public class PaisController implements Serializable {
             lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblPaisReq"));
         } else if (pf.equals(new PaisForm())) {
             lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblPaisReq"));
-        } else if (pf.getCodpais().equals("")) {
+        } else if (pf.getIdpais().equals("")) {
             lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblPaisReq"));
         }
         else{
