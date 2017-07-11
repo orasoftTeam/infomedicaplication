@@ -5,14 +5,14 @@
                 template="/WEB-INF/templates/template.xhtml">
 
     <ui:define name="title">
-        #{bundle['mtoPaisTitulo']}
+        #{bundle['mtoDepartamentoTitulo']}
     </ui:define>
 
     <ui:define name="body"  >
         <f:metadata>
         </f:metadata>
 
-        <adm:breadcrumb title="#{bundle['agregarPaisTitulo']}" link="cadastro-default.xhtml?id="/>
+        <adm:breadcrumb title="#{bundle['agregarDepartamentoTitulo']}" link="cadastro-default.xhtml?id="/>
         <h:form id="form" prependId="false" >
             <p:growl id="growl" showDetail="true" />
             <p:focus/>
@@ -21,16 +21,16 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="#{bundle['lblGuardar']}" update="form:nomPais form:paisDT" actionListener="#{paisController.guardarPais}"
+                        <p:commandButton value="#{bundle['lblGuardar']}" update="form:nomDepartamento form:deptoDT" actionListener="#{departamentoController.guardarDepartamento}"
                                          ajax="true"
                                          icon="fa fa-check" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
-                        <p:commandButton value="#{bundle['lblVer']}" update="form:nomPais form:paisDT" actionListener="#{paisController.validarSeleccion}"
+                        <p:commandButton value="#{bundle['lblVer']}" update="form:nomDepartamento form:deptoDT" actionListener="#{departamentoController.validarSeleccion}"
                                          ajax="true"
                                          icon="ui-icon-search" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
                         <p:commandButton value="#{bundle['lblCancelar']}" 
-                                         action="#{paisController.guardarPais}"
+                                         action="#{departamentoController.guardarDepartamento}"
                                          process="@this"
                                          icon="fa fa-close"/>
                     </div>
@@ -56,25 +56,35 @@
 
                     <div class="ui-g ui-fluid">
                         <div class="ui-g-12">
-                            <p:outputLabel for="nomPais" value="#{bundle['nomPais']}"/>
+                            <p:outputLabel for="paises" value="#{bundle['nomPais']}"/>
+                        </div>
+                        <div class="ui-grid-col-2">
+                                
+                            <p:selectOneMenu id="paises" value="#{departamentoController.idPais}"  >
+                                    <p:ajax event="change" update="form:deptoDT" listener="#{departamentoController.combochanged}"></p:ajax>
+                                    <f:selectItems var="pais" value="#{departamentoController.listaPais}" itemValue="#{pais.codpais}" itemLabel="#{pais.nombrepais}" ></f:selectItems>
+                                </p:selectOneMenu> 
                         </div>
                         <div class="ui-g-12">
-                            <p:inputText id="nomPais" value="#{paisController.nomPais}" size="4"  styleClass="form-control"/>
+                            <p:outputLabel for="nomDepartamento" value="#{bundle['nomDepartamento']}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:inputText id="nomDepartamento" value="#{departamentoController.nomDepartamento}" size="4"  styleClass="form-control"/>
                         </div>
                     </div>
                     <p:separator/>
                     <div id="datatable-single">
-                        <p:dataTable id="paisDT" var="pais" value="#{paisController.listaPais}" paginator="true"
+                        <p:dataTable id="deptoDT" var="depto" value="#{departamentoController.listaDepartamento}" paginator="true"
                                      paginatorPosition="bottom" 
-                                     selection="#{paisController.pf}" rowKey="#{pais.codpais}" rows="5">
+                                     selection="#{departamentoController.df}" rowKey="#{depto.coddepartamento}" rows="5">
                             <f:facet name="header">
                                 #{bundle['lblLista']}
                             </f:facet>
                             <p:column selectionMode="single" style="width: 42px" 
                                       styleClass="align-center"
                                       priority="1" />
-                            <p:column headerText="#{bundle['nomPais']}" sortBy="#{pais.nombrepais}">
-                                <h:outputText value="#{pais.nombrepais}" />
+                            <p:column headerText="#{bundle['nomDepartamento']}" sortBy="#{depto.nombredepartamento}">
+                                <h:outputText value="#{depto.nombredepartamento}" />
                             </p:column>
                         </p:dataTable>
                     </div>

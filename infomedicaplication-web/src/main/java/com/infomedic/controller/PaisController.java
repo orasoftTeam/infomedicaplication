@@ -5,9 +5,7 @@
  */
 package com.infomedic.controller;
 
-import com.infomedic.facade.DepartamentoFacade;
 import com.infomedic.facade.PaisFacade;
-import com.infomedic.forms.DepartamentoForm;
 import com.infomedic.forms.PaisForm;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,80 +27,64 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class DepartamentoController implements Serializable {
+public class PaisController implements Serializable {
 
-    private @Getter @Setter DepartamentoForm df = new DepartamentoForm();
-    private @Getter @Setter PaisForm pf = new PaisForm();
+    private PaisForm pf = new PaisForm();
     private @Getter @Setter  List<PaisForm> listaPais = new ArrayList<PaisForm>();
-    private @Getter @Setter  List<DepartamentoForm> listaDepartamento = new ArrayList<DepartamentoForm>();
-    private @Getter @Setter String nomDepartamento;
-    private @Getter @Setter String idPais;
+    private @Getter @Setter String nomPais;
 
     @EJB
-    private DepartamentoFacade dfacade;
-    
-    @EJB
-    private PaisFacade paisFacade; 
+    private PaisFacade pfacade;
 
-    public DepartamentoController() {
+    public PaisController() {
 
     }
 
     @PostConstruct
     public void init() {
-        //listaDepartamento = dfacade.obtenerDepartamentos();
-        listaPais= paisFacade.obtenerPaises();
-        idPais= listaPais.get(0).getCodpais();
-        //pf= listaPais.get(0);
-        listaDepartamento = dfacade.entityToDtoList(paisFacade.find(new Integer(idPais)).getTblDepartamentoList(), new DepartamentoForm());
+        listaPais = pfacade.obtenerPaises();
     }
 
-    public void guardarDepartamento() {
+    public void guardarPais() {
         if (setValores()) {
-            dfacade.setPais(paisFacade.find(new Integer(idPais)));
-            if (dfacade.agregarDepto(df)) {
-                //df.setNombrepais("");
-                nomDepartamento="";
+            if (pfacade.agregarPais(pf)) {
+                //pf.setNombrepais("");
+                nomPais="";
                 lanzarMensaje("info", getMsgBundle("titleMsgExitoso"), getMsgBundle("lblRegExitoso"));
-                listaDepartamento = dfacade.obtenerDepartamentos();
-                df= new DepartamentoForm();
+                listaPais = pfacade.obtenerPaises();
+                pf= new PaisForm();
             } else {
                 lanzarMensaje("error", getMsgBundle("titleMsgError"), getMsgBundle("lblRegError"));
             }
         }
     }
-    
-    public void combochanged(AjaxBehaviorEvent evt){
-        listaDepartamento = dfacade.entityToDtoList(paisFacade.find(new Integer(idPais)).getTblDepartamentoList(), new DepartamentoForm());
-        return ;
-    }
 
     public boolean setValores() {
         boolean flag = true;
-        if ("".equals(nomDepartamento)) {
+        if ("".equals(nomPais)) {
             flag = false;
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoAdd"));
-        } else if (!"".equals(nomDepartamento)) {
-            if (df == null) {
-                df=new DepartamentoForm();
-                df.setNombredepartamento(nomDepartamento);
-            } else if (!df.getCoddepartamento().equals("")) {
-                df.setNombredepartamento(nomDepartamento);
+            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblPaisAdd"));
+        } else if (!"".equals(nomPais)) {
+            if (pf == null) {
+                pf=new PaisForm();
+                pf.setNombrepais(nomPais);
+            } else if (!pf.getCodpais().equals("")) {
+                pf.setNombrepais(nomPais);
             }
         }
         return flag;
     }
 
     public void validarSeleccion() {
-        if (df == null) {
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoReq"));
-        } else if (df.equals(new DepartamentoForm())) {
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoReq"));
-        } else if (df.getCoddepartamento().equals("")) {
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoReq"));
+        if (pf == null) {
+            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblPaisReq"));
+        } else if (pf.equals(new PaisForm())) {
+            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblPaisReq"));
+        } else if (pf.getCodpais().equals("")) {
+            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblPaisReq"));
         }
         else{
-            nomDepartamento= df.getNombredepartamento();
+            nomPais= pf.getNombrepais();
         }
     }
 
@@ -134,5 +115,16 @@ public class DepartamentoController implements Serializable {
         ResourceBundle bundle = ResourceBundle.getBundle("/Bundle", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         String value = bundle.getString(key);
         return value;
+    }
+
+    public PaisForm getPf() {
+        if (pf == null) {
+            pf = new PaisForm();
+        }
+        return pf;
+    }
+
+    public void setPf(PaisForm pf) {
+        this.pf = pf;
     }
 }

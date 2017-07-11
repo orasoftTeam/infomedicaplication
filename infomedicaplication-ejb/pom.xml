@@ -52,6 +52,20 @@
                     <version>1.16.18</version>
                     <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>ojdbc6</artifactId>
+                <version>11.2.0</version>
+            </dependency>
+                        <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+            <!-- https://mvnrepository.com/artifact/postgresql/postgresql 
+            <dependency>
+                <groupId>postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>9.2-1002.jdbc4</version>
+            </dependency>
+            -->
+
     </dependencies>
 
     <build>

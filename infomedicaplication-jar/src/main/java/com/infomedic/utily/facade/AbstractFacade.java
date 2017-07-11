@@ -5,16 +5,20 @@
  */
 package com.infomedic.utily.facade;
 
+import com.infomedic.util.forms.AbstractForms;
 import java.util.List;
 import javax.persistence.EntityManager;
+import org.modelmapper.ModelMapper;
 
 /**
  *
  * @author LAP
  */
-public abstract class AbstractFacade<T> {
+public abstract class AbstractFacade<T,C> extends AbstractForms<T, C>{
 
     private Class<T> entityClass;
+    
+    private Class<C> dtoClass;
 
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -43,6 +47,7 @@ public abstract class AbstractFacade<T> {
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
+    
 
     public List<T> findRange(int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();

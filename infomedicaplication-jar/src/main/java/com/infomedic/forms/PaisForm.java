@@ -14,8 +14,9 @@ import lombok.Setter;
  *
  * @author LAP
  */
-public  class DepartamentoForms {
-    private @Setter @Getter  String id;
-    private @Setter @Getter String nombre;
+public  class PaisForm {
+    private @Setter @Getter  String codpais;
+    private @Setter @Getter String nombrepais;
    
 }
+
