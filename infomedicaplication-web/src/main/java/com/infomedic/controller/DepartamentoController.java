@@ -76,8 +76,11 @@ public class DepartamentoController implements Serializable {
         }
     }
     
+   
+    
     public void combochanged(AjaxBehaviorEvent evt){
-        listaDepartamento = dfacade.entityToDtoList(paisFacade.find(new BigDecimal(idPais)).getTblDepartamentoList(), new DepartamentoForm());
+        dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
+        listaDepartamento = dfacade.findById();
         df= new DepartamentoForm();
         nomDepartamento="";
         return ;
