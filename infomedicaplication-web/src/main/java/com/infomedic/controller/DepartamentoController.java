@@ -97,7 +97,10 @@ public class DepartamentoController implements Serializable {
 
     public boolean setValores() {
         boolean flag = true;
-        flag = validationBean.validarCampoVacio(nomDepartamento, "warn", "titleMsgAdv", "lblDepartamentoAdd");
+        flag = validationBean.validarCampoVacio(nomDepartamento, "warn", "titleMsgAdv", "lblDepartamentoAdd")==true
+                ? (validationBean.validarSoloLetras(nomDepartamento, "warn", "titleMsgAdv", "lblLetras")== true
+                ?validationBean.validarLongitudCampo(nomDepartamento, 4, 30, "warn", "titleMsgAdv", "lblLongitud"):false)
+                :false;
         if (flag) {
             if (df == null) {
                 df=new DepartamentoForm();
