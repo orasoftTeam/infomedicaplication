@@ -54,6 +54,7 @@ public class DepartamentoController implements Serializable {
     public void init() {
         //listaDepartamento = dfacade.obtenerDepartamentos();
         listaPais= paisFacade.obtenerPaises();
+        
         idPais= listaPais.get(0).getIdpais();
         //pf= listaPais.get(0);
         listaDepartamento = dfacade.entityToDtoList(paisFacade.find(new BigDecimal(idPais)).getTblDepartamentoList(), new DepartamentoForm());
@@ -66,7 +67,8 @@ public class DepartamentoController implements Serializable {
                 //df.setNombrepais("");
                 nomDepartamento="";
                 lanzarMensaje("info", getMsgBundle("titleMsgExitoso"), getMsgBundle("lblRegExitoso"));
-                listaDepartamento = dfacade.obtenerDepartamentos();
+                listaDepartamento = dfacade.findById();
+                //listaDepartamento = dfacade.obtenerDepartamentos();
                 df= new DepartamentoForm();
             } else {
                 lanzarMensaje("error", getMsgBundle("titleMsgError"), getMsgBundle("lblRegError"));
@@ -76,6 +78,8 @@ public class DepartamentoController implements Serializable {
     
     public void combochanged(AjaxBehaviorEvent evt){
         listaDepartamento = dfacade.entityToDtoList(paisFacade.find(new BigDecimal(idPais)).getTblDepartamentoList(), new DepartamentoForm());
+        df= new DepartamentoForm();
+        nomDepartamento="";
         return ;
     }
 

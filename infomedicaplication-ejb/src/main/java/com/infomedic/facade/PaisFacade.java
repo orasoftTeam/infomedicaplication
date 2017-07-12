@@ -9,6 +9,7 @@ import com.infomedic.entity.TblPais;
 import com.infomedic.forms.PaisForm;
 import com.infomedic.utily.facade.AbstractFacade;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -74,7 +75,8 @@ public class PaisFacade extends AbstractFacade<TblPais, PaisForm> {
         return listaTmpForm;
 
     }
-
+    
+    
     /*
     
     public void buscarPaisPorId(PaisForm pf){

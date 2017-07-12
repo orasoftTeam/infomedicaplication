@@ -81,39 +81,12 @@ public class DepartamentoFacade extends AbstractFacade<TblDepartamento, Departam
         return listaTmpForm;
 
     }
-
-    /*
     
-    public void buscarPaisPorId(PaisForm pf){
-        find(new BigDecimal(pf.getCodpais()));
+    public List<DepartamentoForm> findById(){
+        Query q= getEntityManager().createNativeQuery("select * from tbl_departamento where idpais=?", TblDepartamento.class);
+        q.setParameter(1, pais.getIdpais());
+        List<TblDepartamento> listTmp= q.getResultList();
+        listTmp= listTmp.isEmpty()? new ArrayList<TblDepartamento>(): listTmp;
+        return entityToDtoList(listTmp, new DepartamentoForm());
     }
-    
-    public void buscarPais(PaisForm pf){
-        /*
-        Query q=  getEntityManager().createNativeQuery("select * from tbl_pais where codPais=?", TblPais.class);
-        q.setParameter(1, pf.getCodpais());
-        List<TblPais> temp= q.getResultList();
-        temp =temp.isEmpty()? new ArrayList<TblPais>(): temp;
-        PaisForm t= entityToDto(temp.get(0), pf);
-        System.err.println(t.getNombrepais());
-        
-        
-        traerTodos();
-    }
-    
-    public void traerTodos(){
-        Query q=  getEntityManager().createNativeQuery("select * from tbl_pais", TblPais.class);
-        //q.setParameter(1, pf.getCodpais());
-        List<TblPais> temp= q.getResultList();
-        temp =temp.isEmpty()? new ArrayList<TblPais>(): temp;
-        List<PaisForm> listaP= entityToDtoList(temp, new PaisForm());
-        System.err.println("----------------------------");
-        for(PaisForm v: listaP){
-            System.err.println(v.getCodpais() +"-------" + v.getNombrepais());
-        }
-        System.err.println("----------------------------");
-        //PaisForm t= entityToDto(temp.get(0), pf);
-        //System.err.println(t.getNombrepais());      
-    }
-     */
 }
