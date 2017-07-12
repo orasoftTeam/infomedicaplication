@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+        #{bundle['mtoTipoEmpleadoTitulo']}
+    </ui:define>
+
+    <ui:define name="body"  >
+        <f:metadata>
+        </f:metadata>
+
+        <adm:breadcrumb title="#{bundle['agregarTipoEmpleadoTitulo']}" link="cadastro-default.xhtml?id="/>
+        <h:form id="form" prependId="false" >
+            <p:growl id="growl" showDetail="true" />
+            <p:focus/>
+
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="#{bundle['lblGuardar']}" update="form:nomTipoEmp form:tipoEmpDT" actionListener="#{tipoEmpleadoController.guardarTipoEmpleado()}"
+                                         ajax="true"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblVer']}" update="form:nomTipoEmp form:tipoEmpDT" actionListener="#{tipoEmpleadoController.validarSeleccion()}"
+                                         ajax="true"
+                                         icon="ui-icon-search" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblCancelar']}" 
+                                         action="#{tipoEmpleadoController.guardarTipoEmpleado()}"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                    </div>
+
+                    <!--
+                    
+                    <p:splitButton value="Salvar" update="@form"
+                                   icon="fa fa-check"
+                                   styleClass="hidden-md hidden-lg btn-primary">
+                        <p:menuitem value="Excluir"
+                                    process="@this"
+                                    icon="fa fa-trash"/>
+                        <p:separator/>
+                        <p:menuitem value="Voltar" action="/faces/index?faces-redirect=true" process="@this"
+                                    icon="fa fa-close"/>
+                    </p:splitButton>
+                    
+                    -->
+
+
+
+                    <p:separator/>
+
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
+                            <p:outputLabel for="nomTipoEmp" value="#{bundle['nomTipoEmp']}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:inputText id="nomTipoEmp" value="#{tipoEmpleadoController.nomTipoEmp}" size="4"  styleClass="form-control"/>
+                        </div>
+                    </div>
+                    <p:separator/>
+                    <div id="datatable-single">
+                        <p:dataTable id="tipoEmpDT" var="tipoEmp" value="#{tipoEmpleadoController.listaTiposEmpleado}" paginator="true"
+                                     paginatorPosition="bottom" 
+                                     selection="#{tipoEmpleadoController.tef}" rowKey="#{tipoEmp.idtipoempleado}" rows="5">
+                            <f:facet name="header">
+                                #{bundle['lblListaTipoEmp']}
+                            </f:facet>
+                            <p:column selectionMode="single" style="width: 42px" 
+                                      styleClass="align-center"
+                                      priority="1" />
+                            <p:column headerText="#{bundle['nomTipoEmp']}" sortBy="#{tipoEmp.nombretipo}">
+                                <h:outputText value="#{tipoEmp.nombretipo}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
