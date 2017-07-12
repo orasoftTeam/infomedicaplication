@@ -9,6 +9,7 @@ import com.infomedic.facade.DepartamentoFacade;
 import com.infomedic.facade.PaisFacade;
 import com.infomedic.forms.DepartamentoForm;
 import com.infomedic.forms.PaisForm;
+import com.infomedic.validation.ValidationBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ public class DepartamentoController implements Serializable {
     
     @EJB
     private PaisFacade paisFacade; 
+    
+    @EJB
+    private ValidationBean validationBean;
 
     public DepartamentoController() {
 
@@ -66,12 +70,12 @@ public class DepartamentoController implements Serializable {
             if (dfacade.agregarDepto(df)) {
                 //df.setNombrepais("");
                 nomDepartamento="";
-                lanzarMensaje("info", getMsgBundle("titleMsgExitoso"), getMsgBundle("lblRegExitoso"));
+                validationBean.lanzarMensaje("info", "titleMsgExitoso", "lblRegExitoso");
                 listaDepartamento = dfacade.findById();
                 //listaDepartamento = dfacade.obtenerDepartamentos();
                 df= new DepartamentoForm();
             } else {
-                lanzarMensaje("error", getMsgBundle("titleMsgError"), getMsgBundle("lblRegError"));
+                validationBean.lanzarMensaje("error", "titleMsgError", "lblRegError");
             }
         }
     }
@@ -88,10 +92,8 @@ public class DepartamentoController implements Serializable {
 
     public boolean setValores() {
         boolean flag = true;
-        if ("".equals(nomDepartamento)) {
-            flag = false;
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoAdd"));
-        } else if (!"".equals(nomDepartamento)) {
+        flag = validationBean.validarCampoVacio(nomDepartamento, "warn", "titleMsgAdv", "lblDepartamentoAdd");
+        if (flag) {
             if (df == null) {
                 df=new DepartamentoForm();
                 df.setNombredepartamento(nomDepartamento);
@@ -104,43 +106,14 @@ public class DepartamentoController implements Serializable {
 
     public void validarSeleccion() {
         if (df == null) {
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoReq"));
+            validationBean.lanzarMensaje("warn", "titleMsgAdv", "lblDepartamentoReq");
         } else if (df.equals(new DepartamentoForm())) {
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoReq"));
+            validationBean.lanzarMensaje("warn", "titleMsgAdv", "lblDepartamentoReq");
         } else if (df.getIddepartamento().equals("")) {
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblDepartamentoReq"));
+            validationBean.lanzarMensaje("warn", "titleMsgAdv", "lblDepartamentoReq");
         }
         else{
             nomDepartamento= df.getNombredepartamento();
         }
-    }
-
-    public void lanzarMensaje(String tipo, String titulo, String msg) {
-        FacesMessage.Severity typeMessage;
-        switch (tipo.toLowerCase()) {
-            case "info":
-                typeMessage = FacesMessage.SEVERITY_INFO;
-                break;
-            case "warn":
-                typeMessage = FacesMessage.SEVERITY_WARN;
-                break;
-            case "fatal":
-                typeMessage = FacesMessage.SEVERITY_FATAL;
-                break;
-            case "error":
-                typeMessage = FacesMessage.SEVERITY_ERROR;
-                break;
-            default:
-                typeMessage = FacesMessage.SEVERITY_INFO;
-                break;
-        }
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(typeMessage, titulo, msg));
-    }
-    
-    public String getMsgBundle(String key){
-        ResourceBundle bundle = ResourceBundle.getBundle("/Bundle", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        String value = bundle.getString(key);
-        return value;
     }
 }
