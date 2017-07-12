@@ -34,7 +34,7 @@
                             <p:outputLabel for="tiposervicios" value="#{bundle['nomTipoServicio']}"/>
                         </div>
                         <div class="ui-grid-col-2">
-
+ 
                             <p:selectOneMenu id="tiposervicios" value="#{servicioController.idTipoServicio}"  >
                                 <!--<p:ajax event="change" update="form:deptoDT form:nomDepartamento" listener="#{departamentoController.combochanged}"></p:ajax>-->
                                 <f:selectItems var="tiposervicio" value="#{servicioController.listaTipoServicio}" itemValue="#{tiposervicio.idtiposervicio}" 
