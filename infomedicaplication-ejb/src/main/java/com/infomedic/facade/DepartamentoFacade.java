@@ -82,9 +82,9 @@ public class DepartamentoFacade extends AbstractFacade<TblDepartamento, Departam
 
     }
     
-    public List<DepartamentoForm> findById(){
+    public List<DepartamentoForm> findById(String idPais){
         Query q= getEntityManager().createNativeQuery("select * from tbl_departamento where idpais=?", TblDepartamento.class);
-        q.setParameter(1, pais.getIdpais());
+        q.setParameter(1, new BigDecimal(idPais));
         List<TblDepartamento> listTmp= q.getResultList();
         listTmp= listTmp.isEmpty()? new ArrayList<TblDepartamento>(): listTmp;
         return entityToDtoList(listTmp, new DepartamentoForm());

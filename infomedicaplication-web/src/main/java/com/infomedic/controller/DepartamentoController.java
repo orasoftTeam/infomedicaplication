@@ -66,12 +66,12 @@ public class DepartamentoController implements Serializable {
 
     public void guardarDepartamento() {
         if (setValores()) {
-            dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
+           // dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
             if (dfacade.agregarDepto(df)) {
                 //df.setNombrepais("");
                 nomDepartamento="";
                 validationBean.lanzarMensaje("info", "titleMsgExitoso", "lblRegExitoso");
-                listaDepartamento = dfacade.findById();
+                listaDepartamento = dfacade.findById(idPais);
                 //listaDepartamento = dfacade.obtenerDepartamentos();
                 df= new DepartamentoForm();
             } else {
@@ -83,8 +83,8 @@ public class DepartamentoController implements Serializable {
    
     
     public void combochanged(AjaxBehaviorEvent evt){
-        dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
-        listaDepartamento = dfacade.findById();
+        //dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
+        listaDepartamento = dfacade.findById(idPais);
         df= new DepartamentoForm();
         nomDepartamento="";
         return ;
