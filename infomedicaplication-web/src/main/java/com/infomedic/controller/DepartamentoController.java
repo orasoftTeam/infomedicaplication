@@ -57,7 +57,8 @@ public class DepartamentoController implements Serializable {
         
         idPais= listaPais.get(0).getIdpais();
         //pf= listaPais.get(0);
-        listaDepartamento = dfacade.entityToDtoList(paisFacade.find(new BigDecimal(idPais)).getTblDepartamentoList(), new DepartamentoForm());
+        listaDepartamento = dfacade.findById(idPais);
+                //dfacade.entityToDtoList(paisFacade.find(new BigDecimal(idPais)).getTblDepartamentoList(), new DepartamentoForm());
     }
 
     public void guardarDepartamento() {
