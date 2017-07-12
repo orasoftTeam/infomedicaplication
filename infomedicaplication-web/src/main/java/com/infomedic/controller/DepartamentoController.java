@@ -71,7 +71,7 @@ public class DepartamentoController implements Serializable {
 
     public void guardarDepartamento() {
         if (setValores()) {
-            dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
+           dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
             if (dfacade.agregarDepto(df)) {
                 //df.setNombrepais("");
                 nomDepartamento="";
@@ -92,7 +92,7 @@ public class DepartamentoController implements Serializable {
         listaDepartamento = dfacade.findById(idPais);
         df= new DepartamentoForm();
         nomDepartamento="";
-        return ;
+        
     }
 
     public boolean setValores() {
