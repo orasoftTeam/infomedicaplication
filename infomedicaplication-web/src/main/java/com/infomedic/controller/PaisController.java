@@ -49,6 +49,11 @@ public class PaisController implements Serializable {
     public void init() {
         listaPais = pfacade.obtenerPaises();
     }
+    
+    public void limpiarDatos(){
+        nomPais= "";
+        pf= new PaisForm();
+    }
 
     public void guardarPais() {
         if (setValores()) {

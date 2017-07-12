@@ -22,6 +22,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.cdi.ViewScoped;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+
 /**
  *
  * @author LAP
@@ -60,10 +63,15 @@ public class DepartamentoController implements Serializable {
         listaDepartamento = dfacade.findById(idPais);
                 //dfacade.entityToDtoList(paisFacade.find(new BigDecimal(idPais)).getTblDepartamentoList(), new DepartamentoForm());
     }
+    
+    public void limpiarDatos(){
+        nomDepartamento= "";
+        df= new DepartamentoForm();
+    }
 
     public void guardarDepartamento() {
         if (setValores()) {
-           // dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
+            dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
             if (dfacade.agregarDepto(df)) {
                 //df.setNombrepais("");
                 nomDepartamento="";
@@ -94,7 +102,8 @@ public class DepartamentoController implements Serializable {
             if (df == null) {
                 df=new DepartamentoForm();
                 df.setNombredepartamento(nomDepartamento);
-            } else if (!df.getIddepartamento().equals("")) {
+            }
+            else if (!df.getIddepartamento().equals("")) {
                 df.setNombredepartamento(nomDepartamento);
             }
         }
