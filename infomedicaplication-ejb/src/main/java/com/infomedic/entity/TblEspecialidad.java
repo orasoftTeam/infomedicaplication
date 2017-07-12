@@ -13,10 +13,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblEspecialidad.findAll", query = "SELECT t FROM TblEspecialidad t"),
     @NamedQuery(name = "TblEspecialidad.findByIdespecialidad", query = "SELECT t FROM TblEspecialidad t WHERE t.idespecialidad = :idespecialidad"),
-    @NamedQuery(name = "TblEspecialidad.findByIdempleado", query = "SELECT t FROM TblEspecialidad t WHERE t.idempleado = :idempleado"),
     @NamedQuery(name = "TblEspecialidad.findByNombreespecialidad", query = "SELECT t FROM TblEspecialidad t WHERE t.nombreespecialidad = :nombreespecialidad")})
 public class TblEspecialidad implements Serializable {
 
@@ -42,12 +44,10 @@ public class TblEspecialidad implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ESPECIALIDAD_SEQ")
+    @SequenceGenerator(name = "ESPECIALIDAD_SEQ", sequenceName = "SQE_IDESPECIALIDAD", allocationSize = 1)
     @Column(name = "IDESPECIALIDAD")
     private BigDecimal idespecialidad;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "IDEMPLEADO")
-    private BigInteger idempleado;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -63,9 +63,8 @@ public class TblEspecialidad implements Serializable {
         this.idespecialidad = idespecialidad;
     }
 
-    public TblEspecialidad(BigDecimal idespecialidad, BigInteger idempleado, String nombreespecialidad) {
+    public TblEspecialidad(BigDecimal idespecialidad, String nombreespecialidad) {
         this.idespecialidad = idespecialidad;
-        this.idempleado = idempleado;
         this.nombreespecialidad = nombreespecialidad;
     }
 
@@ -77,13 +76,6 @@ public class TblEspecialidad implements Serializable {
         this.idespecialidad = idespecialidad;
     }
 
-    public BigInteger getIdempleado() {
-        return idempleado;
-    }
-
-    public void setIdempleado(BigInteger idempleado) {
-        this.idempleado = idempleado;
-    }
 
     public String getNombreespecialidad() {
         return nombreespecialidad;
