@@ -20,27 +20,70 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="#{bundle['lblGuardar']}" icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:commandButton value="#{bundle['lblNuevo']}" update="form:nomServicio form:srvDT" actionListener="#{servicioController.limpiarDatos}"
+                                         ajax="true"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
-                        <p:commandButton value="#{bundle['lblVer']}" icon="ui-icon-search" styleClass="btn-primary"/>
+                        <p:commandButton value="#{bundle['lblGuardar']}" update="form:nomServicio form:srvDT" actionListener="#{servicioController.guardarServicio}"
+                                         ajax="true"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
-                        <p:commandButton value="#{bundle['lblCancelar']}" process="@this"
+                        <p:commandButton value="#{bundle['lblVer']}" update="form:nomServicio form:srvDT" actionListener="#{servicioController.validarSeleccion}"
+                                         ajax="true"
+                                         icon="ui-icon-search" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblCancelar']}" 
+                                         action="#{servicioController.guardarServicio}"
+                                         process="@this"
                                          icon="fa fa-close"/>
                     </div>
 
                     <p:separator/>
+
                     <div class="ui-g ui-fluid">
                         <div class="ui-g-12">
                             <p:outputLabel for="tiposervicios" value="#{bundle['nomTipoServicio']}"/>
                         </div>
                         <div class="ui-grid-col-2">
- 
+
                             <p:selectOneMenu id="tiposervicios" value="#{servicioController.idTipoServicio}"  >
-                                <!--<p:ajax event="change" update="form:deptoDT form:nomDepartamento" listener="#{departamentoController.combochanged}"></p:ajax>-->
+                                <p:ajax event="change" update="form:srvDT form:nomServicio" listener="#{servicioController.combochanged}"></p:ajax>
                                 <f:selectItems var="tiposervicio" value="#{servicioController.listaTipoServicio}" itemValue="#{tiposervicio.idtiposervicio}" 
                                                itemLabel="#{tiposervicio.nombretiposervicio}" ></f:selectItems>
                             </p:selectOneMenu> 
                         </div>
+
+                        <div class="ui-g-12">
+                            <p:outputLabel for="form:nomServicio" value="#{bundle['nomServicio']}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:inputText id="nomServicio" value="#{servicioController.nomServicio}" size="4"  styleClass="form-control"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:outputLabel for="form:requisitoSrv" value="#{bundle['requisitoServ']}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:inputText id="requisitoSrv" value="#{servicioController.requisitos}" size="4"  styleClass="form-control"/>
+                        </div>
+                    </div>
+                    <p:separator/>
+                    <div id="datatable-single">
+                        <p:dataTable id="srvDT" var="srv" value="#{servicioController.listaServicio}" paginator="true"
+                                     paginatorPosition="bottom" 
+                                     selection="#{servicioController.srv}" rowKey="#{srv.idservicio}" rows="5" >
+                            <f:facet name="header">
+                                #{bundle['lblListaServicio']}
+                            </f:facet>
+                            <p:column selectionMode="single" style="width: 42px" 
+                                      styleClass="align-center"
+                                      priority="1" />
+                            <p:column headerText="#{bundle['nomServicio']}" sortBy="#{srv.idservicio}">
+                                <h:outputText value="#{srv.nombreservicio}" />
+                            </p:column>
+                            <p:column headerText="#{bundle['requisitoServ']}" sortBy="#{srv.idservicio}">
+                                <h:outputText value="#{srv.requisitos}" />
+                            </p:column>
+                        </p:dataTable>
                     </div>
                 </div>
             </div>

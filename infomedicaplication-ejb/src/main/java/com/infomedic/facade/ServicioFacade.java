@@ -30,9 +30,7 @@ public class ServicioFacade extends AbstractFacade<TblServicios, ServicioForm> {
     @PersistenceContext(unitName = "infomedicPU")
     private EntityManager em;
 
-    private @Getter
-    @Setter
-    TblTiposervicio tipoServicio;
+    private @Getter @Setter TblTiposervicio tipoServicio;
 
     @Override
     protected EntityManager getEntityManager() {

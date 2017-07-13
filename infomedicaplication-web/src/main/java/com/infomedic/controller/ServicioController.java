@@ -21,6 +21,8 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.cdi.ViewScoped;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -30,7 +32,7 @@ import org.omnifaces.cdi.ViewScoped;
 @ViewScoped
 public class ServicioController implements Serializable{
     private @Getter @Setter ServicioForm srv = new ServicioForm();
-    private @Getter @Setter TipoServicioForm pf = new TipoServicioForm();
+    private @Getter @Setter TipoServicioForm tsv = new TipoServicioForm();
     private @Getter @Setter  List<TipoServicioForm> listaTipoServicio = new ArrayList<TipoServicioForm>();
     private @Getter @Setter  List<ServicioForm> listaServicio = new ArrayList<ServicioForm>();
     private @Getter @Setter String nomServicio;
@@ -59,10 +61,16 @@ public class ServicioController implements Serializable{
         
         listaServicio = svfacade.findById(idTipoServicio);                
     }
+
+    public void limpiarDatos(){
+        nomServicio= "";
+        requisitos= "";
+        srv= new ServicioForm();
+    }
     
     public void guardarServicio() {
         if (setValores()) {
-           // dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
+            svfacade.setTipoServicio(tpsvFacade.find(new BigDecimal(idTipoServicio)));
             if (svfacade.agregarSrv(srv)) {
                 //df.setNombrepais("");
                 nomServicio="";

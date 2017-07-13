@@ -48,7 +48,7 @@ public class TblServicios implements Serializable {
     @NotNull
     @Column(name = "IDSERVICIO")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SRVC_SEQ")
-    @SequenceGenerator(name = "SERVC_SEQ", sequenceName = "SQE_IDSERVICIOS", allocationSize = 1)
+    @SequenceGenerator(name = "SRVC_SEQ", sequenceName = "SQE_IDSERVICIOS", allocationSize = 1)
     private BigDecimal idservicio;
     @Basic(optional = false)
     @NotNull
