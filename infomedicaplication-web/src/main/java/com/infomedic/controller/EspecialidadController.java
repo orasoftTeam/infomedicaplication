@@ -8,6 +8,7 @@ package com.infomedic.controller;
 import com.infomedic.facade.EspecialidadFacade;
 import javax.inject.Named;
 import com.infomedic.forms.EspecialidadForm;
+import com.infomedic.validation.ValidationBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,9 @@ import org.omnifaces.cdi.ViewScoped;
 public class EspecialidadController implements Serializable{
 
     @EJB
+    private ValidationBean validationBean;
+
+    @EJB
     private EspecialidadFacade EspecFacade;
 
     private EspecialidadForm specForm = new EspecialidadForm();
@@ -45,30 +49,39 @@ public class EspecialidadController implements Serializable{
        this.listaEspecialidad = this.EspecFacade.obtenerEspecialidades();
     }
     
+    public void limpiarDatos() {
+        this.nomEspecialidad = "";
+        this.specForm = new EspecialidadForm();
+    }
+    
     public void guardarEspecialidad() {
         if(this.setValores()) {
             if(this.EspecFacade.agregarEspecialidad(this.specForm)) {
                 this.nomEspecialidad = "";
-                lanzarMensaje("info", getMesgBundle("titleMsgExitoso"), getMesgBundle("lblRegExitoso"));
+                validationBean.lanzarMensaje("info", "titleMsgExitoso", "lblRegExitoso");
                 this.listaEspecialidad = this.EspecFacade.obtenerEspecialidades();
                 this.specForm = new EspecialidadForm();
             } else {
-                lanzarMensaje("error", getMesgBundle("titleMsgError"), getMesgBundle("lblRegError"));
+                validationBean.lanzarMensaje("error", "titleMsgError", "lblRegError");
             }
         }
     }
     
     public boolean setValores() {
         boolean flag = true;
-        if("".equals(this.nomEspecialidad)) {
-            flag = false;
-            this.lanzarMensaje("warn", this.getMesgBundle("titleMsgAdv"), this.getMesgBundle("lblEspecialidadAdd"));
-        } else if(!"".equals(this.nomEspecialidad)) {
+        
+        flag = validationBean.validarCampoVacio(nomEspecialidad, "warn", "titleMsgAdv", "lblTipoTelefonoAdd") == true
+               ? (validationBean.validarSoloLetras(nomEspecialidad, "warn", "titleMsgAdv", "lblLetras") == true
+               ? validationBean.validarLongitudCampo(nomEspecialidad, 5, 30, "warn", "titleMsgAdv", "lblLongitud") : false)
+               : false;
+        
+        
+        if(flag) {
             if(this.specForm == null) {
                 this.specForm = new EspecialidadForm();
                 this.specForm.setNombreEspecialidad(this.nomEspecialidad);
             } else if(!this.specForm.getIdEspecialidad().equals("")) {
-                this.specForm.setNombreEspecialidad(this.nomEspecialidad);
+                this.specForm.setNombreEspecialidad(nomEspecialidad);
             }
         }
         
@@ -77,45 +90,14 @@ public class EspecialidadController implements Serializable{
     
     public void validarSeleccion() {
         if(this.specForm == null) {
-            this.lanzarMensaje("warn", this.getMesgBundle("titleMsgAdv"), this.getMesgBundle("lblEspecialidadReq"));
+            validationBean.lanzarMensaje("warn", "titleMsgAdv", "lblEspecialidadReq");
         } else if(this.specForm.equals(new EspecialidadForm())) {
-            this.lanzarMensaje("warn", this.getMesgBundle("titleMsgAdv"), this.getMesgBundle("lblEspecialidadReq"));
+            validationBean.lanzarMensaje("warn", "titleMsgAdv", "lblEspecialidadReq");
         } else if(this.specForm.getIdEspecialidad().equals("")) {
-            this.lanzarMensaje("warn", this.getMesgBundle("titleMsgAdv"), this.getMesgBundle("lblEspecialidadReq"));
+            validationBean.lanzarMensaje("warn", "titleMsgAdv", "lblEspecialidadReq");
         } else {
             this.nomEspecialidad = this.specForm.getNombreEspecialidad();
         }
-    }
-    
-    public void lanzarMensaje(String tipo, String titulo, String msg) {
-        FacesMessage.Severity typeMessage;
-        
-        switch(tipo.toLowerCase()) {
-            case "info":
-                typeMessage = FacesMessage.SEVERITY_INFO;
-                break;
-            case "warn":
-                typeMessage = FacesMessage.SEVERITY_WARN;
-                break;
-            case "fatal":
-                typeMessage = FacesMessage.SEVERITY_FATAL;
-                break;
-            case "error":
-                typeMessage = FacesMessage.SEVERITY_ERROR;
-                break;
-            default:
-                typeMessage = FacesMessage.SEVERITY_INFO;
-                break;
-        }
-        
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(typeMessage, titulo, msg));
-    }
-    
-    public String getMesgBundle(String key) {
-        ResourceBundle bundle = ResourceBundle.getBundle("/Bundle", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        String value = bundle.getString(key);
-        return value;
     }
 
     public EspecialidadForm getSpecForm() {

@@ -13,6 +13,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,6 +43,8 @@ public class TblTipoxtelefono implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TIPOTEL_SEQ")
+    @SequenceGenerator(name = "TIPOTEL_SEQ", sequenceName = "SQE_IDTIPOTEL", allocationSize = 1)
     @Column(name = "IDTIPOXTELEFONO")
     private BigDecimal idtipoxtelefono;
     @Basic(optional = false)

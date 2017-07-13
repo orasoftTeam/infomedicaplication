@@ -5,14 +5,14 @@
                 template="/WEB-INF/templates/template.xhtml">
 
     <ui:define name="title">
-        #{bundle['mtoEspecialidadTitulo']}
+        #{bundle['mtoTipoTelefonoTitulo']}
     </ui:define>
 
     <ui:define name="body"  >
         <f:metadata>
         </f:metadata>
 
-        <adm:breadcrumb title="#{bundle['agregarEspecialidadTitulo']}" link="cadastro-default.xhtml?id="/>
+        <adm:breadcrumb title="#{bundle['agregarTipoTelefonoTitulo']}" link="cadastro-default.xhtml?id="/>
         <h:form id="form" prependId="false" >
             <p:growl id="growl" showDetail="true" />
             <p:focus/>
@@ -21,20 +21,20 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="#{bundle['lblNuevo']}" update="form:nomEspecialidad form:especDT" actionListener="#{especialidadController.limpiar()}"
+                        <p:commandButton value="#{bundle['lblNuevo']}" update="form:nomTipoTelefono form:tipotelDT" actionListener="#{tipoXTelefonoController.limpiarDatos()}"
                                          ajax="true"
                                          icon="fa fa-check" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
-                        <p:commandButton value="#{bundle['lblGuardar']}" update="form:nomEspecialidad form:especDT" actionListener="#{especialidadController.guardarEspecialidad()}"
+                        <p:commandButton value="#{bundle['lblGuardar']}" update="form:nomTipoTelefono form:tipotelDT" actionListener="#{tipoXTelefonoController.guardarTipoTelefono()}"
                                          ajax="true"
                                          icon="fa fa-check" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
-                        <p:commandButton value="#{bundle['lblVer']}" update="form:nomEspecialidad form:especDT" actionListener="#{especialidadController.validarSeleccion()}"
+                        <p:commandButton value="#{bundle['lblVer']}" update="form:nomTipoTelefono form:tipotelDT" actionListener="#{tipoXTelefonoController.validarSeleccion()}"
                                          ajax="true"
                                          icon="ui-icon-search" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
                         <p:commandButton value="#{bundle['lblCancelar']}" 
-                                         action="#{especialidadController.guardarEspecialidad()}"
+                                         action="#{tipoXTelefonoController.guardarTipoTelefono()}"
                                          process="@this"
                                          icon="fa fa-close"/>
                     </div>
@@ -60,25 +60,25 @@
 
                     <div class="ui-g ui-fluid">
                         <div class="ui-g-8">
-                            <p:outputLabel for="nomEspecialidad" value="#{bundle['nomEspecialidad']}"/>
+                            <p:outputLabel for="nomTipoTelefono" value="#{bundle['nomTipoTelefono']}"/>
                         </div>
                         <div class="ui-g-12">
-                            <p:inputText id="nomEspecialidad" value="#{especialidadController.nomEspecialidad}" size="4"  styleClass="form-control"/>
+                            <p:inputText id="nomTipoTelefono" value="#{tipoXTelefonoController.nombreTipo}" size="4"  styleClass="form-control"/>
                         </div>
                     </div>
                     <p:separator/>
                     <div id="datatable-single">
-                        <p:dataTable id="especDT" var="especialidad" value="#{especialidadController.listaEspecialidad}" paginator="true"
+                        <p:dataTable id="tipotelDT" var="tipotel" value="#{tipoXTelefonoController.listaTelefonoTipos}" paginator="true"
                                      paginatorPosition="bottom" 
-                                     selection="#{especialidadController.specForm}" rowKey="#{especialidad.idEspecialidad}" rows="5">
+                                     selection="#{tipoXTelefonoController.telForm}" rowKey="#{tipotel.idTipoXTelefono}" rows="5">
                             <f:facet name="header">
-                                #{bundle['lblListaEspec']}
+                                #{bundle['lblListaTel']}
                             </f:facet>
                             <p:column selectionMode="single" style="width: 42px" 
                                       styleClass="align-center"
                                       priority="1" />
-                            <p:column headerText="#{bundle['nomEspecialidad']}" sortBy="#{especialidad.nombreEspecialidad}">
-                                <h:outputText value="#{especialidad.nombreEspecialidad}" />
+                            <p:column headerText="#{bundle['nomTipoTelefono']}" sortBy="#{tipotel.nombreTipo}">
+                                <h:outputText value="#{tipotel.nombreTipo}" />
                             </p:column>
                         </p:dataTable>
                     </div>
@@ -89,4 +89,6 @@
     </ui:define>
 
 </ui:composition>
+
+
 

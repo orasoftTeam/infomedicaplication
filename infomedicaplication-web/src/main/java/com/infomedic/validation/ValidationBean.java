@@ -31,7 +31,7 @@ public class ValidationBean {
     }
 
     public boolean validarSoloLetras(String c, String tipoMsg, String tituloMsg, String descMsg) {
-        Pattern patron = Pattern.compile("[^A-Za-z ]");
+        Pattern patron = Pattern.compile("[^A-Za-z-ZñÑáéíóúÁÉÍÓÚ]");
         Matcher validar = patron.matcher(c);
         boolean flag;
         if (validar.find()) {

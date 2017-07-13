@@ -45,7 +45,7 @@ public class EspecialidadFacade extends AbstractFacade<TblEspecialidad, Especial
                 this.create(espec);
             } else {
                 TblEspecialidad spec = find(new BigDecimal(espForm.getIdEspecialidad()));
-                spec.setNombreespecialidad(espForm.getNombreEspecialidad());
+                spec.setNombreespecialidad(espForm.getNombreEspecialidad().toUpperCase());
                 this.edit(spec);
             }
         } catch(Exception ex) {
