@@ -12,12 +12,15 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -44,6 +47,8 @@ public class TblServicios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDSERVICIO")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SRVC_SEQ")
+    @SequenceGenerator(name = "SERVC_SEQ", sequenceName = "SQE_IDSERVICIOS", allocationSize = 1)
     private BigDecimal idservicio;
     @Basic(optional = false)
     @NotNull
@@ -150,5 +155,5 @@ public class TblServicios implements Serializable {
     public String toString() {
         return "com.infomedic.entity.TblServicios[ idservicio=" + idservicio + " ]";
     }
-    
+
 }
