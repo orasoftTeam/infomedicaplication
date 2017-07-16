@@ -5,6 +5,7 @@
  */
 package com.infomedic.entity;
 
+import com.infomedic.forms.PaisForm;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,6 +14,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +38,16 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TBL_CONSULTA")
+
+@SqlResultSetMapping(
+        name = "PaisMapping",
+        classes = @ConstructorResult(
+                targetClass = PaisForm.class,
+                columns = {
+                    @ColumnResult(name = "idpais", type = String.class),
+                    @ColumnResult(name = "nombrepais", type = String.class)/*,
+                    @ColumnResult(name = "producto", type = String.class)*/}))
+
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblConsulta.findAll", query = "SELECT t FROM TblConsulta t"),
@@ -222,7 +236,7 @@ public class TblConsulta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblConsulta[ idconsulta=" + idconsulta + " ]";
+        return "com.admin.pruebainsert.TblConsulta[ idconsulta=" + idconsulta + " ]";
     }
     
 }

@@ -55,7 +55,7 @@ public class ServicioController implements Serializable{
     @PostConstruct
     public void init() {
         
-        listaTipoServicio = tpsvFacade.obtenerTipoServicio();
+        listaTipoServicio = tpsvFacade.obtenerTiposServicio();
         
         idTipoServicio = listaTipoServicio.get(0).getIdtiposervicio();
         
@@ -69,6 +69,7 @@ public class ServicioController implements Serializable{
     }
     
     public void guardarServicio() {
+        /*
         if (setValores()) {
             svfacade.setTipoServicio(tpsvFacade.find(new BigDecimal(idTipoServicio)));
             if (svfacade.agregarSrv(srv)) {
@@ -83,6 +84,7 @@ public class ServicioController implements Serializable{
                 validationBean.lanzarMensaje("error", "titleMsgError", "lblRegError");
             }
         }
+        */
     }
     
     public void combochanged(AjaxBehaviorEvent evt){

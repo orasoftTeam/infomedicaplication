@@ -7,6 +7,7 @@ package com.infomedic.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblEmpleadoxservicio.findAll", query = "SELECT t FROM TblEmpleadoxservicio t"),
     @NamedQuery(name = "TblEmpleadoxservicio.findByIdempleadoxservicio", query = "SELECT t FROM TblEmpleadoxservicio t WHERE t.idempleadoxservicio = :idempleadoxservicio"),
+    @NamedQuery(name = "TblEmpleadoxservicio.findByIdservicio", query = "SELECT t FROM TblEmpleadoxservicio t WHERE t.idservicio = :idservicio"),
     @NamedQuery(name = "TblEmpleadoxservicio.findByFechainicio", query = "SELECT t FROM TblEmpleadoxservicio t WHERE t.fechainicio = :fechainicio"),
     @NamedQuery(name = "TblEmpleadoxservicio.findByFechafin", query = "SELECT t FROM TblEmpleadoxservicio t WHERE t.fechafin = :fechafin"),
     @NamedQuery(name = "TblEmpleadoxservicio.findByEstadoservicio", query = "SELECT t FROM TblEmpleadoxservicio t WHERE t.estadoservicio = :estadoservicio")})
@@ -50,6 +52,10 @@ public class TblEmpleadoxservicio implements Serializable {
     private BigDecimal idempleadoxservicio;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "IDSERVICIO")
+    private BigInteger idservicio;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHAINICIO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicio;
@@ -60,9 +66,6 @@ public class TblEmpleadoxservicio implements Serializable {
     @NotNull
     @Column(name = "ESTADOSERVICIO")
     private Character estadoservicio;
-    @JoinColumn(name = "IDSERVICIO", referencedColumnName = "IDSERVICIO")
-    @ManyToOne(optional = false)
-    private TblServicios idservicio;
     @JoinColumn(name = "IDEMPLEADO", referencedColumnName = "IDEMPLEADO")
     @ManyToOne(optional = false)
     private TblEmpleado idempleado;
@@ -76,8 +79,9 @@ public class TblEmpleadoxservicio implements Serializable {
         this.idempleadoxservicio = idempleadoxservicio;
     }
 
-    public TblEmpleadoxservicio(BigDecimal idempleadoxservicio, Date fechainicio, Character estadoservicio) {
+    public TblEmpleadoxservicio(BigDecimal idempleadoxservicio, BigInteger idservicio, Date fechainicio, Character estadoservicio) {
         this.idempleadoxservicio = idempleadoxservicio;
+        this.idservicio = idservicio;
         this.fechainicio = fechainicio;
         this.estadoservicio = estadoservicio;
     }
@@ -88,6 +92,14 @@ public class TblEmpleadoxservicio implements Serializable {
 
     public void setIdempleadoxservicio(BigDecimal idempleadoxservicio) {
         this.idempleadoxservicio = idempleadoxservicio;
+    }
+
+    public BigInteger getIdservicio() {
+        return idservicio;
+    }
+
+    public void setIdservicio(BigInteger idservicio) {
+        this.idservicio = idservicio;
     }
 
     public Date getFechainicio() {
@@ -112,14 +124,6 @@ public class TblEmpleadoxservicio implements Serializable {
 
     public void setEstadoservicio(Character estadoservicio) {
         this.estadoservicio = estadoservicio;
-    }
-
-    public TblServicios getIdservicio() {
-        return idservicio;
-    }
-
-    public void setIdservicio(TblServicios idservicio) {
-        this.idservicio = idservicio;
     }
 
     public TblEmpleado getIdempleado() {
@@ -161,7 +165,7 @@ public class TblEmpleadoxservicio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblEmpleadoxservicio[ idempleadoxservicio=" + idempleadoxservicio + " ]";
+        return "com.admin.pruebainsert.TblEmpleadoxservicio[ idempleadoxservicio=" + idempleadoxservicio + " ]";
     }
     
 }

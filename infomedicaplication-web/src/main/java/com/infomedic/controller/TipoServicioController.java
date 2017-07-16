@@ -40,10 +40,11 @@ public class TipoServicioController implements Serializable{
     
     @PostConstruct
     public void init() {
-        listaTipoServicio = tsfacade.obtenerTipoServicio();
+        listaTipoServicio = tsfacade.obtenerTiposServicio();
     }
     
     public void guardarTiposServicio() {
+        /*
         if (setValores()) {
             if (tsfacade.agregarTipoServicio(tsf)) {
                 //pf.setNombrepais("");
@@ -55,6 +56,7 @@ public class TipoServicioController implements Serializable{
                 lanzarMensaje("error", getMsgBundle("titleMsgError"), getMsgBundle("lblRegError"));
             }
         }
+        */
     }
     
     public boolean setValores() {

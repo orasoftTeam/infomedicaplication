@@ -5,9 +5,7 @@
  */
 package com.infomedic.facade;
 
-import com.infomedic.entity.TblTipoxtelefono;
-import com.infomedic.forms.TipoXTelefonoForm;
-import com.infomedic.utily.facade.AbstractFacade;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +18,17 @@ import javax.persistence.PersistenceContext;
  * @author talkcity
  */
 @Stateless
-public class TipoXTelefonoFacade extends AbstractFacade<TblTipoxtelefono, TipoXTelefonoForm>{
+public class TipoXTelefonoFacade {
     @PersistenceContext(unitName = "infomedicPU")
     private EntityManager em;
     
-    @Override
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return this.em;
     }
     
     public TipoXTelefonoFacade() {
-        super(TblTipoxtelefono.class);
     }
-    
+    /*
     public boolean agregarTipoTelefono(TipoXTelefonoForm telForm) {
         boolean flag = true;
         try {
@@ -71,6 +67,6 @@ public class TipoXTelefonoFacade extends AbstractFacade<TblTipoxtelefono, TipoXT
         
         return listForm;
     }
-    
+    */
     
 }

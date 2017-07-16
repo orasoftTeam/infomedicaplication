@@ -5,6 +5,7 @@
  */
 package com.infomedic.forms;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,17 @@ import lombok.Setter;
  *
  * @author LAP
  */
-public class DepartamentoForm {
+
+public  class DepartamentoForm {
     private @Setter @Getter String iddepartamento;
-    private @Setter @Getter String nombredepartamento;
+    private @Setter @Getter  String nombredepartamento;
+
+    public DepartamentoForm(String iddepartamento, String nombredepartamento) {
+        this.iddepartamento = iddepartamento;
+        this.nombredepartamento = nombredepartamento;
+    }
+    public DepartamentoForm(){
+        
+    }
+    
 }

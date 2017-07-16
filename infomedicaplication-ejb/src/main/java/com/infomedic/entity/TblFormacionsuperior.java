@@ -137,7 +137,7 @@ public class TblFormacionsuperior implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblFormacionsuperior[ idformaaca=" + idformaaca + " ]";
+        return "com.admin.pruebainsert.TblFormacionsuperior[ idformaaca=" + idformaaca + " ]";
     }
     
 }

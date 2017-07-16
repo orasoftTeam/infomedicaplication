@@ -70,6 +70,7 @@ public class DepartamentoController implements Serializable {
     }
 
     public void guardarDepartamento() {
+        /*
         if (setValores()) {
            dfacade.setPais(paisFacade.find(new BigDecimal(idPais)));
             if (dfacade.agregarDepto(df)) {
@@ -83,6 +84,7 @@ public class DepartamentoController implements Serializable {
                 validationBean.lanzarMensaje("error", "titleMsgError", "lblRegError");
             }
         }
+    */
     }
     
    

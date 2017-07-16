@@ -6,12 +6,14 @@
 package com.infomedic.forms;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author talkcity
  */
-public @Data class EspecialidadForm {
-    private String idEspecialidad;
-    private String nombreEspecialidad;
+public  class EspecialidadForm {
+    private @Getter @Setter String idEspecialidad;
+    private @Getter @Setter  String nombreEspecialidad;
 }

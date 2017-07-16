@@ -5,18 +5,22 @@
  */
 package com.infomedic.entity;
 
+import com.infomedic.forms.DepartamentoForm;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,10 +34,23 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "TBL_CITA")
+
+@SqlResultSetMapping(
+        name = "DepartamentoMapping",
+        classes = @ConstructorResult(
+                targetClass = DepartamentoForm.class,
+                columns = {
+                    @ColumnResult(name = "iddepartamento", type = String.class),
+                    @ColumnResult(name = "nombredepartamento", type = String.class)/*,
+                    @ColumnResult(name = "producto", type = String.class)*/}))
+
+
+
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblCita.findAll", query = "SELECT t FROM TblCita t"),
     @NamedQuery(name = "TblCita.findByIdcita", query = "SELECT t FROM TblCita t WHERE t.idcita = :idcita"),
+    @NamedQuery(name = "TblCita.findByIdcompany", query = "SELECT t FROM TblCita t WHERE t.idcompany = :idcompany"),
     @NamedQuery(name = "TblCita.findByFechacita", query = "SELECT t FROM TblCita t WHERE t.fechacita = :fechacita"),
     @NamedQuery(name = "TblCita.findByAsuntocita", query = "SELECT t FROM TblCita t WHERE t.asuntocita = :asuntocita"),
     @NamedQuery(name = "TblCita.findByHoracita", query = "SELECT t FROM TblCita t WHERE t.horacita = :horacita"),
@@ -48,6 +65,10 @@ public class TblCita implements Serializable {
     @NotNull
     @Column(name = "IDCITA")
     private BigDecimal idcita;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IDCOMPANY")
+    private BigInteger idcompany;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHACITA")
@@ -75,9 +96,6 @@ public class TblCita implements Serializable {
     @JoinColumn(name = "IDEMPLEADO", referencedColumnName = "IDEMPLEADO")
     @ManyToOne(optional = false)
     private TblEmpleado idempleado;
-    @JoinColumn(name = "IDCONSULTORIO", referencedColumnName = "IDCONSULTORIO")
-    @ManyToOne(optional = false)
-    private TblConsultorio idconsultorio;
 
     public TblCita() {
     }
@@ -86,8 +104,9 @@ public class TblCita implements Serializable {
         this.idcita = idcita;
     }
 
-    public TblCita(BigDecimal idcita, Date fechacita, String asuntocita, BigInteger horacita, Character estadocita) {
+    public TblCita(BigDecimal idcita, BigInteger idcompany, Date fechacita, String asuntocita, BigInteger horacita, Character estadocita) {
         this.idcita = idcita;
+        this.idcompany = idcompany;
         this.fechacita = fechacita;
         this.asuntocita = asuntocita;
         this.horacita = horacita;
@@ -100,6 +119,14 @@ public class TblCita implements Serializable {
 
     public void setIdcita(BigDecimal idcita) {
         this.idcita = idcita;
+    }
+
+    public BigInteger getIdcompany() {
+        return idcompany;
+    }
+
+    public void setIdcompany(BigInteger idcompany) {
+        this.idcompany = idcompany;
     }
 
     public Date getFechacita() {
@@ -158,14 +185,6 @@ public class TblCita implements Serializable {
         this.idempleado = idempleado;
     }
 
-    public TblConsultorio getIdconsultorio() {
-        return idconsultorio;
-    }
-
-    public void setIdconsultorio(TblConsultorio idconsultorio) {
-        this.idconsultorio = idconsultorio;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -188,7 +207,7 @@ public class TblCita implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblCita[ idcita=" + idcita + " ]";
+        return "com.admin.pruebainsert.TblCita[ idcita=" + idcita + " ]";
     }
     
 }

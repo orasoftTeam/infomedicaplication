@@ -182,7 +182,7 @@ public class TblExplaboemple implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblExplaboemple[ idexpelaboemple=" + idexpelaboemple + " ]";
+        return "com.admin.pruebainsert.TblExplaboemple[ idexpelaboemple=" + idexpelaboemple + " ]";
     }
     
 }

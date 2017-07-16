@@ -107,7 +107,7 @@ public class TblGalerriaxempleado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblGalerriaxempleado[ idgaleempleado=" + idgaleempleado + " ]";
+        return "com.admin.pruebainsert.TblGalerriaxempleado[ idgaleempleado=" + idgaleempleado + " ]";
     }
     
 }

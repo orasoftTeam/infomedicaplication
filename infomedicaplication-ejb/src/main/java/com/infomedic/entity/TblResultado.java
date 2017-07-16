@@ -124,7 +124,7 @@ public class TblResultado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblResultado[ idresultado=" + idresultado + " ]";
+        return "com.admin.pruebainsert.TblResultado[ idresultado=" + idresultado + " ]";
     }
     
 }

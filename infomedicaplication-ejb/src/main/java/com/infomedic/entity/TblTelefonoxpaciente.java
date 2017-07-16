@@ -7,6 +7,7 @@ package com.infomedic.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblTelefonoxpaciente.findAll", query = "SELECT t FROM TblTelefonoxpaciente t"),
     @NamedQuery(name = "TblTelefonoxpaciente.findByIdtelefonoxpaciente", query = "SELECT t FROM TblTelefonoxpaciente t WHERE t.idtelefonoxpaciente = :idtelefonoxpaciente"),
+    @NamedQuery(name = "TblTelefonoxpaciente.findByIdtipoxtelefono", query = "SELECT t FROM TblTelefonoxpaciente t WHERE t.idtipoxtelefono = :idtipoxtelefono"),
     @NamedQuery(name = "TblTelefonoxpaciente.findByNumerotelefono", query = "SELECT t FROM TblTelefonoxpaciente t WHERE t.numerotelefono = :numerotelefono")})
 public class TblTelefonoxpaciente implements Serializable {
 
@@ -42,12 +44,13 @@ public class TblTelefonoxpaciente implements Serializable {
     private BigDecimal idtelefonoxpaciente;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "IDTIPOXTELEFONO")
+    private BigInteger idtipoxtelefono;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "NUMEROTELEFONO")
     private String numerotelefono;
-    @JoinColumn(name = "IDTIPOXTELEFONO", referencedColumnName = "IDTIPOXTELEFONO")
-    @ManyToOne(optional = false)
-    private TblTipoxtelefono idtipoxtelefono;
     @JoinColumn(name = "IDPACIENTE", referencedColumnName = "IDPACIENTE")
     @ManyToOne(optional = false)
     private TblPaciente idpaciente;
@@ -59,8 +62,9 @@ public class TblTelefonoxpaciente implements Serializable {
         this.idtelefonoxpaciente = idtelefonoxpaciente;
     }
 
-    public TblTelefonoxpaciente(BigDecimal idtelefonoxpaciente, String numerotelefono) {
+    public TblTelefonoxpaciente(BigDecimal idtelefonoxpaciente, BigInteger idtipoxtelefono, String numerotelefono) {
         this.idtelefonoxpaciente = idtelefonoxpaciente;
+        this.idtipoxtelefono = idtipoxtelefono;
         this.numerotelefono = numerotelefono;
     }
 
@@ -72,20 +76,20 @@ public class TblTelefonoxpaciente implements Serializable {
         this.idtelefonoxpaciente = idtelefonoxpaciente;
     }
 
+    public BigInteger getIdtipoxtelefono() {
+        return idtipoxtelefono;
+    }
+
+    public void setIdtipoxtelefono(BigInteger idtipoxtelefono) {
+        this.idtipoxtelefono = idtipoxtelefono;
+    }
+
     public String getNumerotelefono() {
         return numerotelefono;
     }
 
     public void setNumerotelefono(String numerotelefono) {
         this.numerotelefono = numerotelefono;
-    }
-
-    public TblTipoxtelefono getIdtipoxtelefono() {
-        return idtipoxtelefono;
-    }
-
-    public void setIdtipoxtelefono(TblTipoxtelefono idtipoxtelefono) {
-        this.idtipoxtelefono = idtipoxtelefono;
     }
 
     public TblPaciente getIdpaciente() {
@@ -118,7 +122,7 @@ public class TblTelefonoxpaciente implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblTelefonoxpaciente[ idtelefonoxpaciente=" + idtelefonoxpaciente + " ]";
+        return "com.admin.pruebainsert.TblTelefonoxpaciente[ idtelefonoxpaciente=" + idtelefonoxpaciente + " ]";
     }
     
 }

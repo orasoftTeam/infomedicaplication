@@ -5,10 +5,9 @@
  */
 package com.infomedic.facade;
 
-import com.infomedic.entity.TblServicios;
-import com.infomedic.entity.TblTiposervicio;
+
 import com.infomedic.forms.ServicioForm;
-import com.infomedic.forms.TipoServicioForm;
+
 import com.infomedic.utily.facade.AbstractFacade;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,22 +24,54 @@ import lombok.Setter;
  * @author talkcity
  */
 @Stateless
-public class ServicioFacade extends AbstractFacade<TblServicios, ServicioForm> {
+public class ServicioFacade  {
 
     @PersistenceContext(unitName = "infomedicPU")
     private EntityManager em;
 
-    private @Getter @Setter TblTiposervicio tipoServicio;
 
-    @Override
-    protected EntityManager getEntityManager() {
+
+    public EntityManager getEntityManager() {
         return em;
     }
 
     public ServicioFacade() {
-        super(TblServicios.class);
+    }
+    
+     public List<ServicioForm> obtenerServicios(){
+         
+        String sql= "select TO_CHAR(idservicio) idservicio, nombreservicio, requisitos from tbl_servicio";
+        Query q= getEntityManager().createNativeQuery(sql,"ServicioMapping");
+        List<ServicioForm> list=(List<ServicioForm>) (q.getResultList().isEmpty()? new ArrayList<ServicioForm>(): q.getResultList());
+        /*
+        String sql="select c.CUSTOMER_ID as id_cliente, c.\"NAME\" as nombre_cliente, p.DESCRIPTION as producto \n" +
+                " from customer as c, product_code as pc, product as p \n" +
+                "where c.DISCOUNT_CODE=pc.DISCOUNT_CODE and pc.PROD_CODE=p.PRODUCT_CODE";
+        Query q= em.createNativeQuery(sql, "JoinMapping");
+        List<JoinResultClass> list=(List<JoinResultClass>) (q.getResultList().isEmpty()? new ArrayList<JoinResultClass>(): q.getResultList());
+        */
+        return list;
+    }
+     
+    public List<ServicioForm> findByTipoServicio(String idTipo){
+        Query q= getEntityManager().createNativeQuery("select idservicio, nombreservicio, requisitos from tbl_servicio where idtiposervicio=?", "ServicioMapping");
+        q.setParameter(1, new BigDecimal(idTipo));
+        List<ServicioForm> listTmp= (List<ServicioForm>) q.getResultList();
+        listTmp= (listTmp.isEmpty()? new ArrayList<ServicioForm>(): listTmp);
+        return listTmp;
+        //return entityToDtoList(listTmp, new DepartamentoForm());
+    }
+    
+    public List<ServicioForm> findById(String idServicio){
+        Query q= getEntityManager().createNativeQuery("select idservicio, nombreservicio, requisitos from tbl_servicio where idservicio=?", "ServicioMapping");
+        q.setParameter(1, new BigDecimal(idServicio));
+        List<ServicioForm> listTmp= (List<ServicioForm>) q.getResultList();
+        listTmp= (listTmp.isEmpty()? new ArrayList<ServicioForm>(): listTmp);
+        return listTmp;
+        //return entityToDtoList(listTmp, new DepartamentoForm());
     }
 
+    /*
     public boolean agregarSrv(ServicioForm sv) {
         boolean flag = true;
         try {
@@ -91,4 +122,5 @@ public class ServicioFacade extends AbstractFacade<TblServicios, ServicioForm> {
         listTmp = listTmp.isEmpty() ? new ArrayList<TblServicios>() : listTmp;
         return entityToDtoList(listTmp, new ServicioForm());
     }
+    */
 }

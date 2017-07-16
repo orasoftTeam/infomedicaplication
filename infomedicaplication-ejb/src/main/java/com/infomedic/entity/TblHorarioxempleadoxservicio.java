@@ -134,7 +134,7 @@ public class TblHorarioxempleadoxservicio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblHorarioxempleadoxservicio[ idhorarioxempleadoxservicio=" + idhorarioxempleadoxservicio + " ]";
+        return "com.admin.pruebainsert.TblHorarioxempleadoxservicio[ idhorarioxempleadoxservicio=" + idhorarioxempleadoxservicio + " ]";
     }
     
 }

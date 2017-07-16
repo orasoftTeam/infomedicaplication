@@ -7,6 +7,7 @@ package com.infomedic.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -14,8 +15,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblPaciente.findAll", query = "SELECT t FROM TblPaciente t"),
     @NamedQuery(name = "TblPaciente.findByIdpaciente", query = "SELECT t FROM TblPaciente t WHERE t.idpaciente = :idpaciente"),
+    @NamedQuery(name = "TblPaciente.findByIdusuario", query = "SELECT t FROM TblPaciente t WHERE t.idusuario = :idusuario"),
     @NamedQuery(name = "TblPaciente.findByNombrepaciente", query = "SELECT t FROM TblPaciente t WHERE t.nombrepaciente = :nombrepaciente"),
     @NamedQuery(name = "TblPaciente.findByApellidospaciente", query = "SELECT t FROM TblPaciente t WHERE t.apellidospaciente = :apellidospaciente"),
     @NamedQuery(name = "TblPaciente.findByDireccionpaciente", query = "SELECT t FROM TblPaciente t WHERE t.direccionpaciente = :direccionpaciente"),
@@ -62,6 +62,10 @@ public class TblPaciente implements Serializable {
     @NotNull
     @Column(name = "IDPACIENTE")
     private BigDecimal idpaciente;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IDUSUARIO")
+    private BigInteger idusuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -124,14 +128,6 @@ public class TblPaciente implements Serializable {
     @Size(max = 100)
     @Column(name = "NOMBRERESPONSABLE")
     private String nombreresponsable;
-    @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO")
-    @ManyToOne(optional = false)
-    private TblUsuario idusuario;
-    /*
-    @JoinColumn(name = "IDMUNICIPIO", referencedColumnName = "IDMUNICIPIO")
-    @ManyToOne(optional = false)
-    private TblMunicipio idmunicipio;
-    */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaciente")
     private List<TblExpediente> tblExpedienteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaciente")
@@ -146,8 +142,9 @@ public class TblPaciente implements Serializable {
         this.idpaciente = idpaciente;
     }
 
-    public TblPaciente(BigDecimal idpaciente, String nombrepaciente, String apellidospaciente, String direccionpaciente, Date fechanacimientopaciente, Character generopaciente, String ocupacionpaciente, String lugarnacimientopaciente, Character estadopaciente) {
+    public TblPaciente(BigDecimal idpaciente, BigInteger idusuario, String nombrepaciente, String apellidospaciente, String direccionpaciente, Date fechanacimientopaciente, Character generopaciente, String ocupacionpaciente, String lugarnacimientopaciente, Character estadopaciente) {
         this.idpaciente = idpaciente;
+        this.idusuario = idusuario;
         this.nombrepaciente = nombrepaciente;
         this.apellidospaciente = apellidospaciente;
         this.direccionpaciente = direccionpaciente;
@@ -164,6 +161,14 @@ public class TblPaciente implements Serializable {
 
     public void setIdpaciente(BigDecimal idpaciente) {
         this.idpaciente = idpaciente;
+    }
+
+    public BigInteger getIdusuario() {
+        return idusuario;
+    }
+
+    public void setIdusuario(BigInteger idusuario) {
+        this.idusuario = idusuario;
     }
 
     public String getNombrepaciente() {
@@ -294,22 +299,6 @@ public class TblPaciente implements Serializable {
         this.nombreresponsable = nombreresponsable;
     }
 
-    public TblUsuario getIdusuario() {
-        return idusuario;
-    }
-
-    public void setIdusuario(TblUsuario idusuario) {
-        this.idusuario = idusuario;
-    }
-/*
-    public TblMunicipio getIdmunicipio() {
-        return idmunicipio;
-    }
-
-    public void setIdmunicipio(TblMunicipio idmunicipio) {
-        this.idmunicipio = idmunicipio;
-    }
-*/
     @XmlTransient
     public List<TblExpediente> getTblExpedienteList() {
         return tblExpedienteList;
@@ -359,7 +348,7 @@ public class TblPaciente implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblPaciente[ idpaciente=" + idpaciente + " ]";
+        return "com.admin.pruebainsert.TblPaciente[ idpaciente=" + idpaciente + " ]";
     }
     
 }

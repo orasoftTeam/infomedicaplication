@@ -5,7 +5,7 @@
  */
 package com.infomedic.controller;
 
-import com.infomedic.facade.RubroFacade;
+
 import com.infomedic.forms.RubroForm;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,17 +32,17 @@ public class RubroController implements Serializable{
     private @Getter @Setter List<RubroForm> listaRubro = new ArrayList<RubroForm>();
     private @Getter @Setter String nomRubro;
     
-    @EJB
-    private RubroFacade rfacade;
+
     
     public RubroController(){}
     
     @PostConstruct
     public void init(){
-     listaRubro = rfacade.obtenerRubros();
+     //listaRubro = rfacade.obtenerRubros();
     }
     
     public void guardarRubro(){
+        /*
         if (setValores()) {
             if (rfacade.agregarRubro(rf)) {
                 nomRubro="";
@@ -54,6 +54,7 @@ public class RubroController implements Serializable{
             }
             
         }
+        */
     }
     
     public boolean setValores(){

@@ -7,12 +7,11 @@ package com.infomedic.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblGaleriaxconsultorio.findAll", query = "SELECT t FROM TblGaleriaxconsultorio t"),
     @NamedQuery(name = "TblGaleriaxconsultorio.findByIdgaleconsul", query = "SELECT t FROM TblGaleriaxconsultorio t WHERE t.idgaleconsul = :idgaleconsul"),
+    @NamedQuery(name = "TblGaleriaxconsultorio.findByIdcompany", query = "SELECT t FROM TblGaleriaxconsultorio t WHERE t.idcompany = :idcompany"),
     @NamedQuery(name = "TblGaleriaxconsultorio.findByRutafotoconsultorio", query = "SELECT t FROM TblGaleriaxconsultorio t WHERE t.rutafotoconsultorio = :rutafotoconsultorio")})
 public class TblGaleriaxconsultorio implements Serializable {
 
@@ -42,12 +42,13 @@ public class TblGaleriaxconsultorio implements Serializable {
     private BigDecimal idgaleconsul;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "IDCOMPANY")
+    private BigInteger idcompany;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "RUTAFOTOCONSULTORIO")
     private String rutafotoconsultorio;
-    @JoinColumn(name = "IDCONSULTORIO", referencedColumnName = "IDCONSULTORIO")
-    @ManyToOne(optional = false)
-    private TblConsultorio idconsultorio;
 
     public TblGaleriaxconsultorio() {
     }
@@ -56,8 +57,9 @@ public class TblGaleriaxconsultorio implements Serializable {
         this.idgaleconsul = idgaleconsul;
     }
 
-    public TblGaleriaxconsultorio(BigDecimal idgaleconsul, String rutafotoconsultorio) {
+    public TblGaleriaxconsultorio(BigDecimal idgaleconsul, BigInteger idcompany, String rutafotoconsultorio) {
         this.idgaleconsul = idgaleconsul;
+        this.idcompany = idcompany;
         this.rutafotoconsultorio = rutafotoconsultorio;
     }
 
@@ -69,20 +71,20 @@ public class TblGaleriaxconsultorio implements Serializable {
         this.idgaleconsul = idgaleconsul;
     }
 
+    public BigInteger getIdcompany() {
+        return idcompany;
+    }
+
+    public void setIdcompany(BigInteger idcompany) {
+        this.idcompany = idcompany;
+    }
+
     public String getRutafotoconsultorio() {
         return rutafotoconsultorio;
     }
 
     public void setRutafotoconsultorio(String rutafotoconsultorio) {
         this.rutafotoconsultorio = rutafotoconsultorio;
-    }
-
-    public TblConsultorio getIdconsultorio() {
-        return idconsultorio;
-    }
-
-    public void setIdconsultorio(TblConsultorio idconsultorio) {
-        this.idconsultorio = idconsultorio;
     }
 
     @Override
@@ -107,7 +109,7 @@ public class TblGaleriaxconsultorio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblGaleriaxconsultorio[ idgaleconsul=" + idgaleconsul + " ]";
+        return "com.admin.pruebainsert.TblGaleriaxconsultorio[ idgaleconsul=" + idgaleconsul + " ]";
     }
     
 }

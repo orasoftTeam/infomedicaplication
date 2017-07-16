@@ -5,17 +5,21 @@
  */
 package com.infomedic.entity;
 
+import com.infomedic.forms.MunicipioForm;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +33,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "TBL_DOCUMENTO")
+
+@SqlResultSetMapping(
+        name = "MunicipioMapping",
+        classes = @ConstructorResult(
+                targetClass = MunicipioForm.class,
+                columns = {
+                    @ColumnResult(name = "idmunicipio", type = String.class),
+                    @ColumnResult(name = "nombremunicipio", type = String.class)/*,
+                    @ColumnResult(name = "producto", type = String.class)*/}))
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblDocumento.findAll", query = "SELECT t FROM TblDocumento t"),
@@ -155,7 +168,7 @@ public class TblDocumento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblDocumento[ iddocumento=" + iddocumento + " ]";
+        return "com.admin.pruebainsert.TblDocumento[ iddocumento=" + iddocumento + " ]";
     }
     
 }

@@ -5,13 +5,18 @@
  */
 package com.infomedic.entity;
 
+import com.infomedic.forms.PaisForm;
+import com.infomedic.forms.ServicioForm;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,6 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,10 +40,23 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TBL_EMPLEADO")
+
+@SqlResultSetMapping(
+        name = "ServicioMapping",
+        classes = @ConstructorResult(
+                targetClass = ServicioForm.class,
+                columns = {
+                    @ColumnResult(name = "idservicio", type = String.class),
+                    @ColumnResult(name = "nombreservicio", type = String.class),
+                    @ColumnResult(name = "requisitos", type = String.class)}))
+
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblEmpleado.findAll", query = "SELECT t FROM TblEmpleado t"),
     @NamedQuery(name = "TblEmpleado.findByIdempleado", query = "SELECT t FROM TblEmpleado t WHERE t.idempleado = :idempleado"),
+    @NamedQuery(name = "TblEmpleado.findByIdcompany", query = "SELECT t FROM TblEmpleado t WHERE t.idcompany = :idcompany"),
+    @NamedQuery(name = "TblEmpleado.findByIdmunicipio", query = "SELECT t FROM TblEmpleado t WHERE t.idmunicipio = :idmunicipio"),
+    @NamedQuery(name = "TblEmpleado.findByIdusuario", query = "SELECT t FROM TblEmpleado t WHERE t.idusuario = :idusuario"),
     @NamedQuery(name = "TblEmpleado.findByNombreempleado", query = "SELECT t FROM TblEmpleado t WHERE t.nombreempleado = :nombreempleado"),
     @NamedQuery(name = "TblEmpleado.findByApellidoempleado", query = "SELECT t FROM TblEmpleado t WHERE t.apellidoempleado = :apellidoempleado"),
     @NamedQuery(name = "TblEmpleado.findByDuiempleado", query = "SELECT t FROM TblEmpleado t WHERE t.duiempleado = :duiempleado"),
@@ -58,6 +77,18 @@ public class TblEmpleado implements Serializable {
     @NotNull
     @Column(name = "IDEMPLEADO")
     private BigDecimal idempleado;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IDCOMPANY")
+    private BigInteger idcompany;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IDMUNICIPIO")
+    private BigInteger idmunicipio;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IDUSUARIO")
+    private BigInteger idusuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -111,31 +142,22 @@ public class TblEmpleado implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
     private List<TblEmpleadoxservicio> tblEmpleadoxservicioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
-    private List<TblGalerriaxempleado> tblGalerriaxempleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
-    private List<TblTelefonoxempleado> tblTelefonoxempleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
-    private List<TblExplaboemple> tblExplaboempleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
     private List<TblEmpleadoxespecialidad> tblEmpleadoxespecialidadList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    private List<TblGalerriaxempleado> tblGalerriaxempleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
     private List<TblConsulta> tblConsultaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
     private List<TblCita> tblCitaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    private List<TblTelefonoxempleado> tblTelefonoxempleadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    private List<TblExplaboemple> tblExplaboempleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
     private List<TblFormacionsuperior> tblFormacionsuperiorList;
-    @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO")
-    @ManyToOne(optional = false)
-    private TblUsuario idusuario;
     @JoinColumn(name = "IDTIPOEMPLEADO", referencedColumnName = "IDTIPOEMPLEADO")
     @ManyToOne(optional = false)
     private TblTipoempleado idtipoempleado;
-    @JoinColumn(name = "IDMUNICIPIO", referencedColumnName = "IDMUNICIPIO")
-    @ManyToOne(optional = false)
-    private TblMunicipio idmunicipio;
-    @JoinColumn(name = "IDCONSULTORIO", referencedColumnName = "IDCONSULTORIO")
-    @ManyToOne(optional = false)
-    private TblConsultorio idconsultorio;
 
     public TblEmpleado() {
     }
@@ -144,8 +166,11 @@ public class TblEmpleado implements Serializable {
         this.idempleado = idempleado;
     }
 
-    public TblEmpleado(BigDecimal idempleado, String nombreempleado, String apellidoempleado, String duiempleado, String direccionempleado, Date fechanacimientoempleado, Character generoempleado, Character estadoempleado, Date fechainicio) {
+    public TblEmpleado(BigDecimal idempleado, BigInteger idcompany, BigInteger idmunicipio, BigInteger idusuario, String nombreempleado, String apellidoempleado, String duiempleado, String direccionempleado, Date fechanacimientoempleado, Character generoempleado, Character estadoempleado, Date fechainicio) {
         this.idempleado = idempleado;
+        this.idcompany = idcompany;
+        this.idmunicipio = idmunicipio;
+        this.idusuario = idusuario;
         this.nombreempleado = nombreempleado;
         this.apellidoempleado = apellidoempleado;
         this.duiempleado = duiempleado;
@@ -162,6 +187,30 @@ public class TblEmpleado implements Serializable {
 
     public void setIdempleado(BigDecimal idempleado) {
         this.idempleado = idempleado;
+    }
+
+    public BigInteger getIdcompany() {
+        return idcompany;
+    }
+
+    public void setIdcompany(BigInteger idcompany) {
+        this.idcompany = idcompany;
+    }
+
+    public BigInteger getIdmunicipio() {
+        return idmunicipio;
+    }
+
+    public void setIdmunicipio(BigInteger idmunicipio) {
+        this.idmunicipio = idmunicipio;
+    }
+
+    public BigInteger getIdusuario() {
+        return idusuario;
+    }
+
+    public void setIdusuario(BigInteger idusuario) {
+        this.idusuario = idusuario;
     }
 
     public String getNombreempleado() {
@@ -270,39 +319,21 @@ public class TblEmpleado implements Serializable {
     }
 
     @XmlTransient
-    public List<TblGalerriaxempleado> getTblGalerriaxempleadoList() {
-        return tblGalerriaxempleadoList;
-    }
-
-    public void setTblGalerriaxempleadoList(List<TblGalerriaxempleado> tblGalerriaxempleadoList) {
-        this.tblGalerriaxempleadoList = tblGalerriaxempleadoList;
-    }
-
-    @XmlTransient
-    public List<TblTelefonoxempleado> getTblTelefonoxempleadoList() {
-        return tblTelefonoxempleadoList;
-    }
-
-    public void setTblTelefonoxempleadoList(List<TblTelefonoxempleado> tblTelefonoxempleadoList) {
-        this.tblTelefonoxempleadoList = tblTelefonoxempleadoList;
-    }
-
-    @XmlTransient
-    public List<TblExplaboemple> getTblExplaboempleList() {
-        return tblExplaboempleList;
-    }
-
-    public void setTblExplaboempleList(List<TblExplaboemple> tblExplaboempleList) {
-        this.tblExplaboempleList = tblExplaboempleList;
-    }
-
-    @XmlTransient
     public List<TblEmpleadoxespecialidad> getTblEmpleadoxespecialidadList() {
         return tblEmpleadoxespecialidadList;
     }
 
     public void setTblEmpleadoxespecialidadList(List<TblEmpleadoxespecialidad> tblEmpleadoxespecialidadList) {
         this.tblEmpleadoxespecialidadList = tblEmpleadoxespecialidadList;
+    }
+
+    @XmlTransient
+    public List<TblGalerriaxempleado> getTblGalerriaxempleadoList() {
+        return tblGalerriaxempleadoList;
+    }
+
+    public void setTblGalerriaxempleadoList(List<TblGalerriaxempleado> tblGalerriaxempleadoList) {
+        this.tblGalerriaxempleadoList = tblGalerriaxempleadoList;
     }
 
     @XmlTransient
@@ -324,6 +355,24 @@ public class TblEmpleado implements Serializable {
     }
 
     @XmlTransient
+    public List<TblTelefonoxempleado> getTblTelefonoxempleadoList() {
+        return tblTelefonoxempleadoList;
+    }
+
+    public void setTblTelefonoxempleadoList(List<TblTelefonoxempleado> tblTelefonoxempleadoList) {
+        this.tblTelefonoxempleadoList = tblTelefonoxempleadoList;
+    }
+
+    @XmlTransient
+    public List<TblExplaboemple> getTblExplaboempleList() {
+        return tblExplaboempleList;
+    }
+
+    public void setTblExplaboempleList(List<TblExplaboemple> tblExplaboempleList) {
+        this.tblExplaboempleList = tblExplaboempleList;
+    }
+
+    @XmlTransient
     public List<TblFormacionsuperior> getTblFormacionsuperiorList() {
         return tblFormacionsuperiorList;
     }
@@ -332,36 +381,12 @@ public class TblEmpleado implements Serializable {
         this.tblFormacionsuperiorList = tblFormacionsuperiorList;
     }
 
-    public TblUsuario getIdusuario() {
-        return idusuario;
-    }
-
-    public void setIdusuario(TblUsuario idusuario) {
-        this.idusuario = idusuario;
-    }
-
     public TblTipoempleado getIdtipoempleado() {
         return idtipoempleado;
     }
 
     public void setIdtipoempleado(TblTipoempleado idtipoempleado) {
         this.idtipoempleado = idtipoempleado;
-    }
-
-    public TblMunicipio getIdmunicipio() {
-        return idmunicipio;
-    }
-
-    public void setIdmunicipio(TblMunicipio idmunicipio) {
-        this.idmunicipio = idmunicipio;
-    }
-
-    public TblConsultorio getIdconsultorio() {
-        return idconsultorio;
-    }
-
-    public void setIdconsultorio(TblConsultorio idconsultorio) {
-        this.idconsultorio = idconsultorio;
     }
 
     @Override
@@ -386,7 +411,7 @@ public class TblEmpleado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblEmpleado[ idempleado=" + idempleado + " ]";
+        return "com.admin.pruebainsert.TblEmpleado[ idempleado=" + idempleado + " ]";
     }
     
 }

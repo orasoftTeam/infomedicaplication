@@ -7,6 +7,7 @@ package com.infomedic.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblExpediente.findAll", query = "SELECT t FROM TblExpediente t"),
     @NamedQuery(name = "TblExpediente.findByIdexpediente", query = "SELECT t FROM TblExpediente t WHERE t.idexpediente = :idexpediente"),
+    @NamedQuery(name = "TblExpediente.findByIdcompany", query = "SELECT t FROM TblExpediente t WHERE t.idcompany = :idcompany"),
     @NamedQuery(name = "TblExpediente.findByFechadecreacion", query = "SELECT t FROM TblExpediente t WHERE t.fechadecreacion = :fechadecreacion"),
     @NamedQuery(name = "TblExpediente.findByEstadoexpediente", query = "SELECT t FROM TblExpediente t WHERE t.estadoexpediente = :estadoexpediente")})
 public class TblExpediente implements Serializable {
@@ -49,6 +51,10 @@ public class TblExpediente implements Serializable {
     private BigDecimal idexpediente;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "IDCOMPANY")
+    private BigInteger idcompany;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHADECREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechadecreacion;
@@ -59,9 +65,6 @@ public class TblExpediente implements Serializable {
     @JoinColumn(name = "IDPACIENTE", referencedColumnName = "IDPACIENTE")
     @ManyToOne(optional = false)
     private TblPaciente idpaciente;
-    @JoinColumn(name = "IDCONSULTORIO", referencedColumnName = "IDCONSULTORIO")
-    @ManyToOne(optional = false)
-    private TblConsultorio idconsultorio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idexpediente")
     private List<TblConsulta> tblConsultaList;
 
@@ -72,8 +75,9 @@ public class TblExpediente implements Serializable {
         this.idexpediente = idexpediente;
     }
 
-    public TblExpediente(BigDecimal idexpediente, Date fechadecreacion, Character estadoexpediente) {
+    public TblExpediente(BigDecimal idexpediente, BigInteger idcompany, Date fechadecreacion, Character estadoexpediente) {
         this.idexpediente = idexpediente;
+        this.idcompany = idcompany;
         this.fechadecreacion = fechadecreacion;
         this.estadoexpediente = estadoexpediente;
     }
@@ -84,6 +88,14 @@ public class TblExpediente implements Serializable {
 
     public void setIdexpediente(BigDecimal idexpediente) {
         this.idexpediente = idexpediente;
+    }
+
+    public BigInteger getIdcompany() {
+        return idcompany;
+    }
+
+    public void setIdcompany(BigInteger idcompany) {
+        this.idcompany = idcompany;
     }
 
     public Date getFechadecreacion() {
@@ -108,14 +120,6 @@ public class TblExpediente implements Serializable {
 
     public void setIdpaciente(TblPaciente idpaciente) {
         this.idpaciente = idpaciente;
-    }
-
-    public TblConsultorio getIdconsultorio() {
-        return idconsultorio;
-    }
-
-    public void setIdconsultorio(TblConsultorio idconsultorio) {
-        this.idconsultorio = idconsultorio;
     }
 
     @XmlTransient
@@ -149,7 +153,7 @@ public class TblExpediente implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblExpediente[ idexpediente=" + idexpediente + " ]";
+        return "com.admin.pruebainsert.TblExpediente[ idexpediente=" + idexpediente + " ]";
     }
     
 }

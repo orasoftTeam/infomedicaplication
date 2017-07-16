@@ -5,16 +5,21 @@
  */
 package com.infomedic.entity;
 
+import com.infomedic.forms.PaisForm;
+import com.infomedic.forms.TipoServicioForm;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,6 +30,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "TBL_EMPLEADOXESPECIALIDAD")
+
+@SqlResultSetMapping(
+        name = "TipoServicioMapping",
+        classes = @ConstructorResult(
+                targetClass = TipoServicioForm.class,
+                columns = {
+                    @ColumnResult(name = "idtiposervicio", type = String.class),
+                    @ColumnResult(name = "nombretiposervicio", type = String.class)/*,
+                    @ColumnResult(name = "producto", type = String.class)*/}))
+
+
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblEmpleadoxespecialidad.findAll", query = "SELECT t FROM TblEmpleadoxespecialidad t"),
@@ -98,7 +114,7 @@ public class TblEmpleadoxespecialidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infomedic.entity.TblEmpleadoxespecialidad[ idempleadoxespecialidad=" + idempleadoxespecialidad + " ]";
+        return "com.admin.pruebainsert.TblEmpleadoxespecialidad[ idempleadoxespecialidad=" + idempleadoxespecialidad + " ]";
     }
     
 }

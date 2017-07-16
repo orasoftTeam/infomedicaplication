@@ -5,11 +5,9 @@
  */
 package com.infomedic.facade;
 
-import com.infomedic.entity.TblPais;
+
 import com.infomedic.forms.PaisForm;
-import com.infomedic.utily.facade.AbstractFacade;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -22,20 +20,46 @@ import javax.persistence.Query;
  * @author LAP
  */
 @Stateless
-public class PaisFacade extends AbstractFacade<TblPais, PaisForm> {
+public class PaisFacade  {
 
     @PersistenceContext(unitName = "infomedicPU")
     private EntityManager em;
 
-    @Override
-    protected EntityManager getEntityManager() {
+    
+    public EntityManager getEntityManager() {
         return em;
     }
 
     public PaisFacade() {
-        super(TblPais.class);
+        
+    }
+    
+      public List<PaisForm> obtenerPaises(){
+         
+        String sql= "select TO_CHAR(idpais) as idpais, nombrepais from tbl_pais";
+        Query q= getEntityManager().createNativeQuery(sql,"PaisMapping");
+        List<PaisForm> list=(List<PaisForm>) (q.getResultList().isEmpty()? new ArrayList<PaisForm>(): q.getResultList());
+        /*
+        String sql="select c.CUSTOMER_ID as id_cliente, c.\"NAME\" as nombre_cliente, p.DESCRIPTION as producto \n" +
+                " from customer as c, product_code as pc, product as p \n" +
+                "where c.DISCOUNT_CODE=pc.DISCOUNT_CODE and pc.PROD_CODE=p.PRODUCT_CODE";
+        Query q= em.createNativeQuery(sql, "JoinMapping");
+        List<JoinResultClass> list=(List<JoinResultClass>) (q.getResultList().isEmpty()? new ArrayList<JoinResultClass>(): q.getResultList());
+        */
+        return list;
+    }
+     
+    
+    public List<PaisForm> findById(String idPais){
+        Query q= getEntityManager().createNativeQuery("select idpais, nombrepais from tbl_pais where idpais=?", "PaisMapping");
+        q.setParameter(1, new BigDecimal(idPais));
+        List<PaisForm> listTmp= (List<PaisForm>) q.getResultList();
+        listTmp= (listTmp.isEmpty()? new ArrayList<PaisForm>(): listTmp);
+        return listTmp;
+        //return entityToDtoList(listTmp, new DepartamentoForm());
     }
 
+    /*
     public boolean agregarPais(PaisForm pf) {
         boolean flag = true;
         try {

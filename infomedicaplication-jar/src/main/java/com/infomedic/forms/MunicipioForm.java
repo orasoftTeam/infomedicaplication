@@ -9,26 +9,22 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 /**
  *
  * @author LAP
  */
-public  class PaisForm {
-    private @Setter @Getter  String idpais;
-    private @Setter @Getter  String nombrepais;
+public class MunicipioForm {
+    private @Getter @Setter String idmunicipio;
+    private @Getter @Setter String nombremunicipio;
 
-    public PaisForm(String idpais, String nombrepais) {
-        this.idpais = idpais;
-        this.nombrepais = nombrepais;
+    public MunicipioForm(String idmunicipio, String nombremunicipio) {
+        this.idmunicipio = idmunicipio;
+        this.nombremunicipio = nombremunicipio;
     }
     
-    public PaisForm(){
+    public MunicipioForm(){
         
     }
     
     
-   
 }
-

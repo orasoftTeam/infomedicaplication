@@ -43,7 +43,7 @@ public class TipoXTelefonoController implements Serializable{
     
     @PostConstruct
     public void init() {
-        this.listaTelefonoTipos = tipoXTelefonoFacade.obtenerTiposTelefono();
+        //this.listaTelefonoTipos = tipoXTelefonoFacade.obtenerTiposTelefono();
     }
     
     public void limpiarDatos() {
@@ -52,6 +52,7 @@ public class TipoXTelefonoController implements Serializable{
     }
     
     public void guardarTipoTelefono() {
+        /*
         if(this.setValores()) {
             if(this.tipoXTelefonoFacade.agregarTipoTelefono(telForm)) {
                 this.nombreTipo = "";
@@ -62,6 +63,7 @@ public class TipoXTelefonoController implements Serializable{
                 validationBean.lanzarMensaje("error", "titleMsgError", "lblRegError");
             }
         }
+        */
     }
     
     public boolean setValores() {

@@ -4,13 +4,27 @@
  * and open the template in the editor.
  */
 package com.infomedic.forms;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  *
  * @author talkcity
  */
-public class TipoServicioForm {
+public  class TipoServicioForm {
     private @Getter @Setter String idtiposervicio;
     private @Getter @Setter String nombretiposervicio;
+    
+    public TipoServicioForm(){
+        
+    }
+
+    public TipoServicioForm(String idtiposervicio, String nombretiposervicio) {
+        this.idtiposervicio = idtiposervicio;
+        this.nombretiposervicio = nombretiposervicio;
+    }
+    
+    
 }

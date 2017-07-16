@@ -56,6 +56,7 @@ public class PaisController implements Serializable {
     }
 
     public void guardarPais() {
+        /*
         if (setValores()) {
             if (pfacade.agregarPais(pf)) {
                 //pf.setNombrepais("");
@@ -67,6 +68,7 @@ public class PaisController implements Serializable {
                 validationBean.lanzarMensaje("error", "titleMsgError", "lblRegError");
             }
         }
+        */
     }
 
     public boolean setValores() {
