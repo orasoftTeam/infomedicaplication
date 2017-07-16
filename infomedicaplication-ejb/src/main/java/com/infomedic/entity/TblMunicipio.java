@@ -56,8 +56,10 @@ public class TblMunicipio implements Serializable {
     private String nombremunicipio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idmunicipio")
     private List<TblConsultorio> tblConsultorioList;
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idmunicipio")
     private List<TblPaciente> tblPacienteList;
+*/
     @JoinColumn(name = "IDDEPARTAMENTO", referencedColumnName = "IDDEPARTAMENTO")
     @ManyToOne(optional = false)
     private TblDepartamento iddepartamento;
@@ -100,7 +102,7 @@ public class TblMunicipio implements Serializable {
     public void setTblConsultorioList(List<TblConsultorio> tblConsultorioList) {
         this.tblConsultorioList = tblConsultorioList;
     }
-
+/*
     @XmlTransient
     public List<TblPaciente> getTblPacienteList() {
         return tblPacienteList;
@@ -109,7 +111,7 @@ public class TblMunicipio implements Serializable {
     public void setTblPacienteList(List<TblPaciente> tblPacienteList) {
         this.tblPacienteList = tblPacienteList;
     }
-
+*/
     public TblDepartamento getIddepartamento() {
         return iddepartamento;
     }

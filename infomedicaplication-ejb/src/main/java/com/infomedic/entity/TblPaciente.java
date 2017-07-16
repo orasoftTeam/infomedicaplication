@@ -127,9 +127,11 @@ public class TblPaciente implements Serializable {
     @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO")
     @ManyToOne(optional = false)
     private TblUsuario idusuario;
+    /*
     @JoinColumn(name = "IDMUNICIPIO", referencedColumnName = "IDMUNICIPIO")
     @ManyToOne(optional = false)
     private TblMunicipio idmunicipio;
+    */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaciente")
     private List<TblExpediente> tblExpedienteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaciente")
@@ -299,7 +301,7 @@ public class TblPaciente implements Serializable {
     public void setIdusuario(TblUsuario idusuario) {
         this.idusuario = idusuario;
     }
-
+/*
     public TblMunicipio getIdmunicipio() {
         return idmunicipio;
     }
@@ -307,7 +309,7 @@ public class TblPaciente implements Serializable {
     public void setIdmunicipio(TblMunicipio idmunicipio) {
         this.idmunicipio = idmunicipio;
     }
-
+*/
     @XmlTransient
     public List<TblExpediente> getTblExpedienteList() {
         return tblExpedienteList;
