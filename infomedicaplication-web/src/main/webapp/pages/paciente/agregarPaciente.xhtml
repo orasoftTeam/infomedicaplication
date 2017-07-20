@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">
+        #{bundle['mtoPacienteTitulo']}
+    </ui:define> 
+    
+    <ui:define name="body">
+        <f:metadata></f:metadata>
+        <adm:breadcrumb title="#{bundle['agregarPacienteTitulo']}" link="cadastro-default.xhtml?id="/>
+        <h:form id="form" prependId="false">
+            <p:growl id="growl" showDetail="true" />
+            <p:focus/>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div id="main-buttons" class="hidden-sm hidden-xs"><!--botones-->
+                    <p:commandButton value="#{bundle['lblGuardar']}"  actionListener="#{pacienteController.guardarPaciente()}"
+                                     icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblAtras']}" onclick="history.go(-1)" styleClass="btn-primary" icon="fa fa-reply"/>
+                        
+                       
+                
+                </div>
+                <p:separator/>
+              <div class="ui-g ui-fluid">
+                       <!--campos y filtros-->
+                       <div class="ui-g-12">
+                               <p:outputLabel  value="#{bundle['lblnomPac']}" for="nomPac"/>
+                           </div>
+                           <div class="ui-g-12">
+                               <p:inputText id="nomPac" required="true" value="#{pacienteController.nomPac}" size="4" styleClass="form-control"/>
+                           </div>
+                       <div class="ui-g-12">
+                           <p:outputLabel value="#{bundle['lblapePac']}" for="apePac"/>
+                           
+                       </div>
+                       <div class="ui-g-12">
+                           
+                           <p:inputText  id="apePac" required="true" value="#{pacienteController.apePac}" size="4" styleClass="form-control" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:outputLabel value="#{bundle['lbldirPac']}" for="dirPac"/>
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputTextarea id="dirPac"  value="#{pacienteController.dirPac}" styleClass="form-control"/>
+                       </div>
+                       <div class="ui-g-12">
+                           <p:outputLabel  for="fecNacPac" value="#{bundle['lblfnacPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputMask id="fecNacPac" required="true" value="#{pacienteController.fecNacPac}" mask="99/99/9999"/>
+                          
+                       </div>
+                        <div class="ui-g-12">
+                           <p:outputLabel for="estadoCivilPac" value="#{bundle['lblecivilPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:selectOneMenu id="estadoCivilPac" value="#{pacienteController.estadoCivilPac}">
+                               <f:selectItem itemLabel="Soltero/a" itemValue="Soltero" /> 
+                               <f:selectItem itemLabel="Casado/a" itemValue="Casado" /> 
+                               <f:selectItem itemLabel="Divorciado/a" itemValue="Divorciado" /> 
+                               <f:selectItem itemLabel="Viudo/a" itemValue="Viudo" /> 
+                           </p:selectOneMenu>
+                       </div>
+                       
+                       <div class="ui-g-12">
+                           <p:outputLabel for="genPac" value="#{bundle['lblgenPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:selectOneRadio id="genPac" required="true" value="#{pacienteController.genPac}" layout="responsive" columns="1">
+                               <f:selectItem itemLabel="Masculino" itemValue="M" />
+                               <f:selectItem itemLabel="Femenino" itemValue="F" />
+                           </p:selectOneRadio>
+                       </div>     
+
+
+<div class="ui-g-12">
+                           <p:outputLabel for="nomPadrePac" value="#{bundle['lblnpadrePac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputText id="nomPadrePac" value="#{pacienteController.nomPadrePac}" size="4" styleClass="form-control" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:outputLabel for="nomMadrePac" value="#{bundle['lblnmadrePac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputText id="nomMadrePac" value="#{pacienteController.nomMadrePac}" size="4" styleClass="form-control" />
+                       </div>
+                        <div class="ui-g-12">
+                           <p:outputLabel for="nomParejaPac" value="#{bundle['lblnparejaPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputText id="nomParejaPac" value="#{pacienteController.nomParejaPac}" size="4" styleClass="form-control" />
+                       </div>
+                        <div class="ui-g-12">
+                           <p:outputLabel for="nomRespPac" value="#{bundle['lblnrespPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputText id="nomRespPac" value="#{pacienteController.nomRespPac}" size="4" styleClass="form-control" />
+                       </div>       
+
+<div class="ui-g-12">
+                           <p:outputLabel for="ocupacionPac" value="#{bundle['lblocupacionPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputText id="ocupacionPac"  value="#{pacienteController.ocupacionPac}" size="4" styleClass="form-control" />
+                       </div>
+                         <div class="ui-g-12">
+                           <p:outputLabel for="correoPac" value="#{bundle['lblcorreoPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputText id="correoPac" value="#{pacienteController.correoPac}" size="4" styleClass="form-control" />
+                       </div>
+                    
+                <div class="ui-g-12">
+                           <p:outputLabel for="lugarNacPac" value="#{bundle['lbllugnacPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputText id="lugarNacPac"  value="#{pacienteController.lugarNacPac}" size="4" styleClass="form-control" />
+                       </div>
+                    
+                <div class="ui-g-12">
+                           <p:outputLabel for="numDuiPac" value="#{bundle['lblduiPac']}" />
+                       </div>
+                       <div class="ui-g-12">
+                           <p:inputMask mask="99999999-9" id="numDuiPac" value="#{pacienteController.numDuiPac}" size="4" styleClass="form-control" />
+                       </div>
+                       <p:spacer width="5"/>
+                       <p:outputLabel value="#{bundle['lblcamposrequeridos']}"/>
+                    
+                  
+                 
+                
+            </div>
+            
+        </div>
+        </div>
+        </h:form>
+    </ui:define>
+    
+    
+</ui:composition>

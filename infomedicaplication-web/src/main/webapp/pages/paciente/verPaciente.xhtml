@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="title">
+        #{bundle['mtoPacienteTitulo']}
+    </ui:define> 
+    
+    <ui:define name="body">
+        <f:metadata></f:metadata>
+        <adm:breadcrumb title="#{bundle['agregarPacienteTitulo']}" link="cadastro-default.xhtml?id="/>
+        <h:form id="form" prependId="false">
+        <p:growl id="growl" showDetail="true" />
+         <p:commandButton value="Destroy the World"  update="growl">
+        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+    </p:commandButton>
+ 
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+        
+            <p:focus/>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div id="main-buttons" class="hidden-sm hidden-xs">
+                    <p:commandButton value="#{bundle['agregarPacienteTitulo']}" action="agregarPaciente?faces-redirect=true" styleClass="btn-primary" icon="fa fa-plus"
+                                     actionListener="#{pacienteController.limpiarDatos()}"/>
+                    <p:spacer width="5"/>
+                    <p:commandButton value="#{bundle['lblEditar']}" action="#{pacienteController.validarSeleccion()}" styleClass="btn-primary" icon="fa fa-pencil-square-o"/>
+                </div>
+                <p:separator/>
+              <div class="ui-g ui-fluid">
+                       <!--campos y filtros-->
+                    </div>
+                <p:separator/>
+                <div id="datatable-single">
+                    <p:dataTable id="pacienteDT" var="paciente" value="#{pacienteController.listaPaciente}" paginator="true"
+                                 paginatorPosition="bottom"
+                                 selection="#{pacienteController.pf}" rowKey="#{paciente.idpaciente}" rows="5">
+                        <f:facet name="header">
+                            #{bundle['lblListaPaciente']}
+                        </f:facet>
+                        <p:column selectionMode="single" style="width: 42px"
+                                  styleClass="align-center"
+                                  priority="1"/>
+                        <p:column headerText="#{bundle['lblnomPac']}" sortBy="#{paciente.nombrepaciente}" styleClass="align-center">
+                            <h:outputText  value="#{paciente.nombrepaciente}" />
+                        </p:column>
+                        <p:column headerText="#{bundle['lblapePac']}" sortBy="#{paciente.apellidospaciente}" styleClass="align-center">
+                            <h:outputText  value="#{paciente.apellidospaciente}" />
+                        </p:column>
+                        <p:column headerText="#{bundle['lblfnacPac']}" sortBy="#{paciente.fechanacimientopaciente}" styleClass="align-center">
+                            <h:outputText  value="#{paciente.fechanacimientopaciente}" />
+                        </p:column>
+                        <p:column headerText="#{bundle['lblduiPac']}" sortBy="#{paciente.numeroduipaciente}" styleClass="align-center">
+                            <h:outputText  value="#{paciente.numeroduipaciente}" />
+                        </p:column>
+                    </p:dataTable>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        </h:form>
+    </ui:define>
+    
+    
+</ui:composition>
+

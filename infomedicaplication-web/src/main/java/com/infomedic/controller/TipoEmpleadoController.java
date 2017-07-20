@@ -7,6 +7,7 @@ package com.infomedic.controller;
 
 import com.infomedic.facade.TipoEmpleadoFacade;
 import com.infomedic.forms.TipoEmpleadoForm;
+import com.infomedic.validation.ValidationBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ public class TipoEmpleadoController implements Serializable{
     
     @EJB
     private TipoEmpleadoFacade tefacade;
+    @EJB
+    private ValidationBean val;
     
     public TipoEmpleadoController(){}
     
@@ -41,6 +44,11 @@ public class TipoEmpleadoController implements Serializable{
     public void init(){
      listaTiposEmpleado = tefacade.obtenerTiposEmpleado();
     }
+    public void limpiarDatos(){
+    nomTipoEmp = "";
+    tef = new TipoEmpleadoForm();
+    }
+    
     public void guardarTipoEmpleado(){
         if (setValores()) {
             if (tefacade.agregarTipoEmpleado(tef)) {
@@ -56,9 +64,13 @@ public class TipoEmpleadoController implements Serializable{
     }
     public boolean setValores(){
         boolean flag = true;
+        flag = val.validarSoloLetras(nomTipoEmp, "warn","errorVal", "errorNum") == true
+            ? val.validarLongitudCampo(nomTipoEmp, 4, 30, "warn", "titleMsgAdv", "lblLongitud") == true
+            : false;
+        
         if ("".equals(nomTipoEmp)) {
             flag = false;
-            lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblTipoEmpleadoAdd"));
+            //lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblTipoEmpleadoAdd"));
         } else if (!"".equals(nomTipoEmp)){
            if(tef == null){
            tef = new TipoEmpleadoForm();

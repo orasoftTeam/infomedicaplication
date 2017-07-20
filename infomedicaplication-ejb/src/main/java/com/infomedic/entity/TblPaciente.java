@@ -14,10 +14,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,10 +63,12 @@ public class TblPaciente implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "PACIENTE_SEQ")
+    @SequenceGenerator(name = "PACIENTE_SEQ", sequenceName = "sqe_idpaciente", allocationSize = 1)
     @Column(name = "IDPACIENTE")
     private BigDecimal idpaciente;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "IDUSUARIO")
     private BigInteger idusuario;
     @Basic(optional = false)
@@ -76,9 +81,9 @@ public class TblPaciente implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "APELLIDOSPACIENTE")
     private String apellidospaciente;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    //@Basic(optional = false)
+    //@NotNull
+   // @Size(min = 0, max = 255)
     @Column(name = "DIRECCIONPACIENTE")
     private String direccionpaciente;
     @Basic(optional = false)
@@ -102,9 +107,9 @@ public class TblPaciente implements Serializable {
     @Size(max = 100)
     @Column(name = "NOMBREPAREJAPACIENTE")
     private String nombreparejapaciente;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 50)
     @Column(name = "OCUPACIONPACIENTE")
     private String ocupacionpaciente;
     @Size(max = 70)
@@ -113,16 +118,17 @@ public class TblPaciente implements Serializable {
     @Size(max = 9)
     @Column(name = "NUMISSSPACIENTE")
     private String numissspaciente;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    //@Basic(optional = false)
+    //@NotNull
+   // @Size(min = 1, max = 255)
     @Column(name = "LUGARNACIMIENTOPACIENTE")
     private String lugarnacimientopaciente;
     @Size(max = 10)
     @Column(name = "NUMERODUIPACIENTE")
     private String numeroduipaciente;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
+    
     @Column(name = "ESTADOPACIENTE")
     private Character estadopaciente;
     @Size(max = 100)
