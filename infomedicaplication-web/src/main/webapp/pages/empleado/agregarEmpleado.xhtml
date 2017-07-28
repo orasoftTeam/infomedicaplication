@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+        #{bundle['empleadoTitulo']}
+    </ui:define>
+
+    <ui:define name="head-end">
+        <style type="text/css">
+            .ui-grid-row .ui-grid-col-2,
+            .ui-grid-row .ui-grid-col-10 {
+                padding: 0.5em 0;
+                margin-left: 10px;
+            }
+
+            .ui-g-12, .ui-sm-12 {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .ui-datagrid-column .ui-panel.ui-widget-content {
+                border: none;
+            }
+
+
+        </style>
+    </ui:define>
+
+    <ui:define name="body"  >
+        <f:metadata>
+        </f:metadata>
+
+        <adm:breadcrumb title="#{bundle['empleadoTitulo']}" link="cadastro-default.xhtml?id="/>
+        <h:form id="form" prependId="false" >
+            <p:growl id="growl" showDetail="true" />
+            <p:focus/>
+
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+
+                        <p:commandButton value="#{bundle['lblNuevo']}" update="@form"  actionListener="#{empleadoController.resetear()}"
+                                         ajax="true"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblGuardar']}" update="@form"  actionListener="#{empleadoController.validarCamposFormulario}"
+                                         ajax="true"
+                                         icon="fa fa-check" styleClass="btn-primary">
+                        
+                            <p:confirm header="Confirmation" message="#{bundle['lblConfirmReg']}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblVer']}"  actionListener="#{empleadoController.validarSeleccion}"
+                                         ajax="true"
+                                         update="@form"
+                                         icon="ui-icon-search" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblCancelar']}" 
+                                         action="#{departamentoController.guardarDepartamento}"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                    </div>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-warning" >
+                        <p:commandButton value="Yes" type="button" styleClass="btn-primary ui-confirmdialog-yes"
+                                         icon="fa fa-check"/>
+                        <p:commandButton value="No" type="button" styleClass="btn-danger ui-confirmdialog-no"
+                                         icon="fa fa-close"/>
+                    </p:confirmDialog>
+                    <p:separator/>
+
+                    <div id="datatable-single">
+                        <p:dataTable id="empDT" var="empleado" value="#{empleadoController.listaEmpleado}" paginator="true"
+                                     paginatorPosition="bottom" 
+                                     selection="#{empleadoController.selectEmp}" rowKey="#{empleado.idempleado}" rows="5" >
+                            <f:facet name="header">
+                                #{bundle['lblListaEmpleado']}
+                            </f:facet>
+                            <p:column selectionMode="single" style="width: 42px" 
+                                      styleClass="align-center"
+                                      priority="1" />
+                            <p:column headerText="#{bundle['duiEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                <h:outputText value="#{empleado.duiempleado}" />
+                            </p:column>
+                            <p:column headerText="#{bundle['nomEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                <h:outputText value="#{empleado.nombreempleado}" />
+                            </p:column>
+                            <p:column headerText="#{bundle['apeEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                <h:outputText value="#{empleado.apellidoempleado}" />
+                            </p:column>
+                            <p:column headerText="#{bundle['fechaNac']}" sortBy="#{empleado.nombreempleado}">
+                                <h:outputText value="#{empleado.fechanacimientoempleado}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+
+                    <div class="ui-g ui-fluid">
+                        <p:tabView id="tabEmp">
+                            <p:tab title="#{bundle['empleadoDatosPersonales']}">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid card"
+                                             >
+                                    <p:outputLabel for="tipoEmpleado" value="#{bundle['tipoEmp']}"/>
+                                    <p:selectOneMenu id="tipoEmpleado" value="#{empleadoController.tipoEmpleado}"  >
+                                        <f:selectItems var="tipos" value="#{empleadoController.listaTipoEmpleado}" itemValue="#{tipos.idtipoempleado}" itemLabel="#{tipos.nombretipo}" >
+                                        </f:selectItems>
+                                    </p:selectOneMenu> 
+                                    <p:outputLabel for="especial" value="#{bundle['nomEspecialidad']}"/>
+                                    <p:selectOneMenu id="especial" value="#{empleadoController.especialidad}"  >
+                                        <f:selectItems var="especialidad" value="#{empleadoController.listaEspecialidad}" itemValue="#{especialidad.idEspecialidad}" itemLabel="#{especialidad.nombreEspecialidad}" >
+                                        </f:selectItems>
+                                    </p:selectOneMenu> 
+                                    <p:outputLabel for="nomEmpleado" value="#{bundle['nomEmpleado']}"/>
+                                    <p:inputText id="nomEmpleado" value="#{empleadoController.emp.nombreempleado}" size="4"  styleClass="form-control"/>
+                                    <p:outputLabel for="apeEmpleado" value="#{bundle['apeEmpleado']}"/>
+                                    <p:inputText id="apeEmpleado" value="#{empleadoController.emp.apellidoempleado}" size="4"  styleClass="form-control"/>
+                                    <p:outputLabel for="genEmpleado" value="#{bundle['genero']}"/>
+                                    <p:selectOneRadio id="genEmpleado" value="#{empleadoController.emp.generoempleado}">
+                                        <f:selectItem itemLabel="#{bundle['genMasculino']}" itemValue="M" />
+                                        <f:selectItem itemLabel="#{bundle['genFemenino']}" itemValue="F" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel for="fechanac" value="#{bundle['fechaNac']}"/>
+                                    <p:inputMask id="fechanac" mask="99/99/9999" value="#{empleadoController.emp.fechanacimientoempleado}">
+                                        
+                                    </p:inputMask>
+                                    <p:outputLabel for="dui" value="#{bundle['duiEmpleado']}"/>
+                                    <p:inputMask id="dui" mask="99999999-9" value="#{empleadoController.emp.duiempleado}"/>
+                                    <p:outputLabel for="nit" value="#{bundle['nitEmpleado']}"/>
+                                    <p:inputMask id="nit" mask="9999-999999-999-9" value="#{empleadoController.emp.nitempleado}"/>
+                                </p:panelGrid>
+                                <p:outputLabel for="direccion" value="#{bundle['direccion']}"/>
+                                <p:inputTextarea id="direccion" value="#{empleadoController.emp.direccionempleado}"/> 
+                                <p:outputLabel for="descripcion" value="#{bundle['descripcionEmpleado']}"/>
+                                <p:inputTextarea id="descripcion" value="#{empleadoController.emp.descripcionempleado}"/>
+                            </p:tab>
+                            <p:tab title="#{bundle['empleadoTelefonos']}"  >
+                                <p:panelGrid columns="2"  layout="grid" styleClass="ui-fluid card" >
+                                    <p:outputLabel for="tel" value="#{bundle['lblTelefono']}" />
+                                    <p:inputMask id="tel" mask="99999999" size="9" value="#{empleadoController.profesional}" converterMessage="#{bundle['errorTelefono']}" />    
+                                    <p:outputLabel for="listaTel" value="#{bundle['empleadoTelefonos']}"/>
+                                    <p:selectOneListbox id="listaTel"  value="#{empleadoController.selectedTel.numerotelefono}"   >
+                                        <f:selectItems value="#{empleadoController.listaTelefono}" var="telefono"
+                                                       itemLabel="#{telefono.numerotelefono}" itemValue='#{telefono.numerotelefono}'>
+                                        </f:selectItems>
+                                    </p:selectOneListbox> 
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid card">
+                                    <p:commandButton value="#{bundle['lblGuardar']}" update="@form" actionListener="#{empleadoController.agregarTelefono}"
+                                                     ajax="true"
+                                                     icon="fa fa-save" styleClass="btn-primary"/>  
+                                    <p:commandButton value="#{bundle['lblEliminar']}" update="@form" actionListener="#{empleadoController.eliminarTelefono}"
+                                                     ajax="true"
+                                                     icon="fa fa-close" styleClass="btn-primary"/>  
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="#{bundle['empleadoFormacion']}" >
+                                <div class="ui-g">
+                                    <div class="ui-g-12 ">
+                                        <p:outputLabel for="inst" value="#{bundle['instEmpleado']}" />
+                                        <p:inputText id="inst"  size="20"  styleClass="form-control" value="#{empleadoController.formacion.institucionestudio}"/>
+                                        <p:outputLabel for="tit" value="#{bundle['tituloEmpleado']}"/>
+                                        <p:inputText id="tit"  size="20"  styleClass="form-control" value="#{empleadoController.formacion.conceptoestudio}"/>
+                                        <p:outputLabel for="anio" value="#{bundle['anioEmpleado']}" />
+                                        <p:inputMask id="anio" mask="9999" size="4" styleClass="form-control" value="#{empleadoController.formacion.anioestudio}"
+                                                     converterMessage="#{bundle['errorTelefono']}"/> 
+                                    </div>
+                                    <div class="ui-g-12">
+                                        <p:outputLabel for="formacionDT" value="#{bundle['empleadoFormacion']}"/>
+                                        <p:selectOneListbox id="formacionDT"  value="#{empleadoController.telefono}"   >
+                                            <f:selectItems value="#{empleadoController.listaFormacion}" var="empForm"
+                                                           itemLabel="#{empForm.formacion}" itemValue='#{empForm.formacion}' >
+                                            </f:selectItems>
+                                        </p:selectOneListbox>                                       
+                                    </div>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid card">
+                                        <p:commandButton value="#{bundle['lblGuardar']}" update="@form" actionListener="#{empleadoController.agregarFormacion}"
+                                                         ajax="true"
+                                                         icon="fa fa-save" styleClass="btn-primary"/>
+                                        <p:commandButton value="#{bundle['lblEliminar']}" update="@form" actionListener="#{empleadoController.eliminarFormacion}"
+                                                         ajax="true"
+                                                         icon="fa fa-save" styleClass="btn-primary"/>
+                                    </p:panelGrid>
+                                </div>                             
+                            </p:tab>
+                        </p:tabView>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
+

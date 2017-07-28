@@ -6,10 +6,16 @@
 package com.infomedic.validation;
 
 import java.security.MessageDigest;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.Cipher;
@@ -29,17 +35,21 @@ public class ValidationBean {
 
     public boolean validarCampoVacio(String c, String tipoMsg, String tituloMsg, String descMsg) {
         boolean flag;
-        if ("".equals(c)) {
-            flag = false;
-            lanzarMensaje(tipoMsg, tituloMsg, descMsg);
+        if (c != null) {
+            if ("".equals(c)) {
+                flag = false;
+                lanzarMensaje(tipoMsg, tituloMsg, descMsg);
+            } else {
+                flag = true;
+            }
         } else {
-            flag = true;
+            flag = false;
         }
         return flag;
     }
 
     public boolean validarSoloLetras(String c, String tipoMsg, String tituloMsg, String descMsg) {
-        Pattern patron = Pattern.compile("[^A-Za-z-ZñÑáéíóúÁÉÍÓÚ]");
+        Pattern patron = Pattern.compile("[^A-Za-z-ZñÑáéíóúÁÉÍÓÚ ]");
         Matcher validar = patron.matcher(c);
         boolean flag;
         if (validar.find()) {
@@ -53,7 +63,7 @@ public class ValidationBean {
 
     public boolean validarLongitudCampo(String c, int min, int max, String tipoMsg, String tituloMsg, String descMsg) {
         boolean flag;
-        if (!(c.length() >= min && c.length() <= max)) {
+        if (!(c != null && c.length() >= min && c.length() <= max)) {
             flag = false;
             lanzarMensaje(tipoMsg, tituloMsg, descMsg);
         } else {
@@ -141,28 +151,86 @@ public class ValidationBean {
         }
         return base64EncryptedString;
     }
-    
+
     public String Desencriptar(String textoEncriptado) throws Exception {
- 
+
         String secretKey = "infomedicsolutions"; //llave para encriptar datos
         String base64EncryptedString = "";
- 
+
         try {
             byte[] message = Base64.decodeBase64(textoEncriptado.getBytes("utf-8"));
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
             byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
             SecretKey key = new SecretKeySpec(keyBytes, "DESede");
- 
+
             Cipher decipher = Cipher.getInstance("DESede");
             decipher.init(Cipher.DECRYPT_MODE, key);
- 
+
             byte[] plainText = decipher.doFinal(message);
- 
+
             base64EncryptedString = new String(plainText, "UTF-8");
- 
+
         } catch (Exception ex) {
         }
         return base64EncryptedString;
+    }
+
+    public String obtenerFechaActual() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
+        return dateFormat.format(date);
+    }
+
+    public boolean validarFecha(String fecha, String tipo, String titulo, String msg) {
+        boolean flag = true;
+        if (fecha != null && fecha.length() == 10) {
+            String[] ftemp = fecha.split("/");
+            Integer dias = new Integer(ftemp[0]);
+            Integer mes = new Integer(ftemp[1]);
+            Integer anio = new Integer(ftemp[2]);
+            if (anio >= 1900 && anio <= 2100) {
+                if (mes >= 1 && mes <= 12) {
+                    if (mes == 2) {
+                        if (!(dias >= 1 && dias <= 28)) {
+                            flag = false;
+                        }
+                    } else if (!(dias >= 1 && dias <= 31)) {
+                        flag = false;
+                    }
+                } else {
+                    flag = false;
+                }
+            } else {
+                flag = false;
+            }
+        } else {
+            flag = false;
+        }
+        if (!flag) {
+            lanzarMensaje(tipo, titulo, msg);
+        }
+        return flag;
+    }
+
+    public String formatearFecha(String fecha) {
+        try {
+            System.err.println("Fecha al formatear fecha:    "+ fecha);
+            //String dateStr = "Mon Jun 18 00:00:00 IST 2012";
+            DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.US);
+            Date date = (Date) formatter.parse(fecha);
+            System.out.println(date);
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            String formatedDate = (cal.get(Calendar.DATE)<10?"0"+cal.get(Calendar.DATE):cal.get(Calendar.DATE)) + "/" + ((cal.get(Calendar.MONTH) + 1)<10?"0"+(cal.get(Calendar.MONTH) + 1):(cal.get(Calendar.MONTH) + 1)) + "/" + cal.get(Calendar.YEAR);
+            System.out.println("formatedDate : " + formatedDate);
+            fecha= formatedDate;
+        } catch (ParseException ex) {
+            System.err.println("Fecha al formatear fecha en exception:    "+ fecha);
+            //fecha="";
+        }
+        return fecha;
     }
 }

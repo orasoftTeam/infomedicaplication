@@ -3,6 +3,9 @@
   <persistence-unit name="infomedicPU" transaction-type="JTA">
     <jta-data-source>jdbc/infomedic</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <property name="hibernate.show_sql" value="true"></property>
+    </properties>
   </persistence-unit>
 </persistence>

@@ -18,6 +18,9 @@ import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -25,6 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -75,14 +79,16 @@ public class TblEmpleado implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "EMPLEADO_SEQ")
+    @SequenceGenerator(name = "EMPLEADO_SEQ", sequenceName = "SQUE_IDEMPLEADO", allocationSize = 1)
     @Column(name = "IDEMPLEADO")
     private BigDecimal idempleado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDCOMPANY")
     private BigInteger idcompany;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "IDMUNICIPIO")
     private BigInteger idmunicipio;
     @Basic(optional = false)
@@ -110,9 +116,9 @@ public class TblEmpleado implements Serializable {
     @Size(max = 9)
     @Column(name = "NUMEROISSSEMPLEADO")
     private String numeroisssempleado;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 255)
     @Column(name = "DIRECCIONEMPLEADO")
     private String direccionempleado;
     @Basic(optional = false)
@@ -139,21 +145,21 @@ public class TblEmpleado implements Serializable {
     @Column(name = "FECHAFIN")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafin;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblEmpleadoxservicio> tblEmpleadoxservicioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblEmpleadoxespecialidad> tblEmpleadoxespecialidadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblGalerriaxempleado> tblGalerriaxempleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblConsulta> tblConsultaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblCita> tblCitaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblTelefonoxempleado> tblTelefonoxempleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblExplaboemple> tblExplaboempleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado",fetch=FetchType.LAZY)
     private List<TblFormacionsuperior> tblFormacionsuperiorList;
     @JoinColumn(name = "IDTIPOEMPLEADO", referencedColumnName = "IDTIPOEMPLEADO")
     @ManyToOne(optional = false)

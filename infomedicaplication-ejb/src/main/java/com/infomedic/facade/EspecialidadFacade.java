@@ -14,6 +14,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -49,6 +50,7 @@ public class EspecialidadFacade extends AbstractFacade<TblEspecialidad, Especial
                 this.edit(spec);
             }
         } catch(Exception ex) {
+            System.out.println(ex.getMessage());
             flag = false;
         }
         
@@ -61,6 +63,26 @@ public class EspecialidadFacade extends AbstractFacade<TblEspecialidad, Especial
         
         try {
             listaTmpEspec = this.findAll();
+            if(listaTmpEspec.isEmpty()) {
+                listaTmpEspecForm = new ArrayList<EspecialidadForm>();
+            } else {
+                listaTmpEspecForm = this.entityToDtoList(listaTmpEspec, new EspecialidadForm());
+            }
+        } catch(Exception ex) {
+           listaTmpEspecForm =  new ArrayList<EspecialidadForm>();
+        }
+        
+        return listaTmpEspecForm;
+    }
+    
+    public List<EspecialidadForm> finByIdEmpleado(String id) {
+        Query q= getEntityManager().createNativeQuery("select esp.* from tbl_empleadoxespecialidad  eesp, tbl_especialidad  esp where eesp.idempleado=? and eesp.idespecialidad= esp.idespecialidad", TblEspecialidad.class);
+        q.setParameter(1, new BigDecimal(id));
+        List<TblEspecialidad> listaTmpEspec;
+        List<EspecialidadForm> listaTmpEspecForm;
+        
+        try {
+            listaTmpEspec = q.getResultList();
             if(listaTmpEspec.isEmpty()) {
                 listaTmpEspecForm = new ArrayList<EspecialidadForm>();
             } else {
