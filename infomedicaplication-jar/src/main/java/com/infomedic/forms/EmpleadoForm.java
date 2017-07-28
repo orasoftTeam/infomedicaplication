@@ -69,7 +69,7 @@ public class EmpleadoForm {
     String fechafin;
 
     public String getFechanacimientoempleado() {
-        if (fechanacimientoempleado != null && !fechanacimientoempleado.equals("") && fechanacimientoempleado.length()==10) {
+        if (fechanacimientoempleado != null && !fechanacimientoempleado.equals("") ) {
             fechanacimientoempleado = formatearFecha(fechanacimientoempleado);
         }
         return fechanacimientoempleado;
