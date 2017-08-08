@@ -15,6 +15,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,6 +30,19 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
     protected EntityManager getEntityManager(){
     return em;
     }
+    TblPaciente pac;
+
+    public TblPaciente getPac() {
+        return pac;
+    }
+
+    public void setPac(TblPaciente pac) {
+        this.pac = pac;
+    }
+    
+    private BigDecimal lastId;
+    
+    
     
     public PacienteFacade(){
     super(TblPaciente.class);
@@ -36,6 +50,7 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
     
     public boolean agregarPaciente(PacienteForm pf){
     boolean flag = true;
+    
         try {
             if (pf == null) {
                 flag = false;
@@ -43,10 +58,13 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
                 TblPaciente paciente = new TblPaciente();
                 paciente = asignar(paciente, pf);
                 create(paciente);
+                setPac(paciente);
+                System.out.println("com.infomedic.facade.PacienteFacade.agregarPaciente()");
             } else {
               TblPaciente paciente = find(new BigDecimal(pf.getIdpaciente())); 
               paciente = asignar(paciente, pf);
               edit(paciente);
+              setPac(paciente);
             }
         } catch (Exception e) {
             flag = false;
@@ -91,7 +109,7 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
     List <TblPaciente> listaTmp;
     List <PacienteForm> listaTmpForm;
         try {
-            listaTmp = findAll();
+            listaTmp = getPacientes();
             if (listaTmp.isEmpty()) {
                 listaTmpForm = new ArrayList<PacienteForm>();
                 
@@ -103,5 +121,40 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
         }
         
         return listaTmpForm;
+    }
+    
+    
+    public List<TblPaciente> getPacientes(){
+        Query q= getEntityManager().createNativeQuery("select * from tbl_paciente where estadopaciente='A'",TblPaciente.class);
+        List<TblPaciente> listTmp= q.getResultList();
+        return listTmp.isEmpty()? new ArrayList<TblPaciente>():listTmp;
+    }
+    
+    public BigDecimal getLastId(){
+    Query q = getEntityManager().createNativeQuery("select * from tbl_paciente WHERE ROWNUM=1 order by idpaciente desc",TblPaciente.class);
+    List<TblPaciente> list = q.getResultList();
+    this.lastId = list.get(0).getIdpaciente();
+    return lastId;
+    }
+    
+    public boolean existeDui(String dui){
+        boolean flag = true;
+        Query q = getEntityManager().createNativeQuery("select * from tbl_paciente where numeroduipaciente = '"+dui+"' and estadopaciente = 'A'",TblPaciente.class);
+        List<TblPaciente> list = q.getResultList();
+        if (!list.isEmpty()) {
+            flag = false;
+        }
+        
+        return flag;
+    }
+    public boolean existeDui(String dui,String idPaciente){
+        boolean flag = true;
+        Query q = getEntityManager().createNativeQuery("select * from tbl_paciente where numeroduipaciente = '"+dui+"' and estadopaciente = 'A' and idpaciente != " + idPaciente,TblPaciente.class);
+        List<TblPaciente> list = q.getResultList();
+        if (!list.isEmpty()) {
+            flag = false;
+        }
+        
+        return flag;
     }
 }

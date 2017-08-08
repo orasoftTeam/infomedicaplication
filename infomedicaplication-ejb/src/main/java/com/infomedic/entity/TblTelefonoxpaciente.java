@@ -11,11 +11,14 @@ import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -40,6 +43,8 @@ public class TblTelefonoxpaciente implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "TELXPAC_SEQ")
+    @SequenceGenerator(name = "TELXPAC_SEQ", sequenceName = "sqe_idtelxpac", allocationSize = 1)
     @Column(name = "IDTELEFONOXPACIENTE")
     private BigDecimal idtelefonoxpaciente;
     @Basic(optional = false)
