@@ -6,6 +6,7 @@
 package com.infomedic.facade;
 
 
+import com.infomedic.entity.TblEmpleado;
 import com.infomedic.forms.ServicioForm;
 
 import com.infomedic.utily.facade.AbstractFacade;
@@ -65,6 +66,15 @@ public class ServicioFacade  {
     public List<ServicioForm> findById(String idServicio){
         Query q= getEntityManager().createNativeQuery("select idservicio, nombreservicio, requisitos from tbl_servicio where idservicio=?", "ServicioMapping");
         q.setParameter(1, new BigDecimal(idServicio));
+        List<ServicioForm> listTmp= (List<ServicioForm>) q.getResultList();
+        listTmp= (listTmp.isEmpty()? new ArrayList<ServicioForm>(): listTmp);
+        return listTmp;
+        //return entityToDtoList(listTmp, new DepartamentoForm());
+    }
+    
+    public List<ServicioForm> findByIdEmpleado(String idEmpleado){
+        Query q= getEntityManager().createNativeQuery("select * from tbl_servicio where idservicio in(select idservicio from TBL_EMPLEADOXSERVICIO where idempleado=? and estadoservicio='A')", "ServicioMapping");
+        q.setParameter(1, new BigDecimal(idEmpleado));
         List<ServicioForm> listTmp= (List<ServicioForm>) q.getResultList();
         listTmp= (listTmp.isEmpty()? new ArrayList<ServicioForm>(): listTmp);
         return listTmp;

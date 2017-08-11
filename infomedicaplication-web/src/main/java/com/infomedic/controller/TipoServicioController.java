@@ -56,7 +56,8 @@ public class TipoServicioController implements Serializable{
                 lanzarMensaje("error", getMsgBundle("titleMsgError"), getMsgBundle("lblRegError"));
             }
         }
-        */
+    */
+        
     }
     
     public boolean setValores() {

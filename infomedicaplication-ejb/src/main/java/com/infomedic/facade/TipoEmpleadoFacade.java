@@ -43,13 +43,16 @@ public class TipoEmpleadoFacade extends AbstractFacade<TblTipoempleado, TipoEmpl
             } else if (tef.getIdtipoempleado() == null) {
                 TblTipoempleado tipoEmpleado = new TblTipoempleado();
                 tipoEmpleado.setNombretipo(tef.getNombretipo().toUpperCase());
+                tipoEmpleado.setEstadotipo("A");
                 create(tipoEmpleado);
             } else {
                 TblTipoempleado tipoEmpleado = find(new BigDecimal(tef.getIdtipoempleado()));
                 tipoEmpleado.setNombretipo(tef.getNombretipo().toUpperCase());
+                tipoEmpleado.setEstadotipo(tef.getEstadotipo());
                 edit(tipoEmpleado);
             }
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             flag = false;
         }
         
@@ -57,10 +60,11 @@ public class TipoEmpleadoFacade extends AbstractFacade<TblTipoempleado, TipoEmpl
     }
     
     public List<TipoEmpleadoForm> obtenerTiposEmpleado() {
+        Query q= getEntityManager().createNativeQuery("SELECT * FROM TBL_TIPOEMPLEADO WHERE ESTADOTIPO='A'", TblTipoempleado.class);
         List<TblTipoempleado> listaTmp;
         List<TipoEmpleadoForm> listaTmpForm;
         try {
-            listaTmp = findAll();
+            listaTmp = q.getResultList();
             if (listaTmp.isEmpty()) {
                 listaTmpForm = new ArrayList<TipoEmpleadoForm>();
             } else {

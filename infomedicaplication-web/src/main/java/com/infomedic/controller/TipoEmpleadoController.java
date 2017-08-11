@@ -68,8 +68,9 @@ public class TipoEmpleadoController implements Serializable{
             ? val.validarLongitudCampo(nomTipoEmp, 4, 30, "warn", "titleMsgAdv", "lblLongitud") == true
             : false;
         
-        if ("".equals(nomTipoEmp)) {
+        if (!flag || "".equals(nomTipoEmp)) {
             flag = false;
+            tef = new TipoEmpleadoForm();
             //lanzarMensaje("warn", getMsgBundle("titleMsgAdv"), getMsgBundle("lblTipoEmpleadoAdd"));
         } else if (!"".equals(nomTipoEmp)){
            if(tef == null){

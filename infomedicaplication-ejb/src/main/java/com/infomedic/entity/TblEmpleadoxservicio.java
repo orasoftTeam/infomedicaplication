@@ -17,12 +17,15 @@ import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -65,14 +68,16 @@ public class TblEmpleadoxservicio implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "EMPXSERV_SEQ")
+    @SequenceGenerator(name = "EMPXSERV_SEQ", sequenceName = "SQE_IDEMPXSER", allocationSize = 1)
     @Column(name = "IDEMPLEADOXSERVICIO")
     private BigDecimal idempleadoxservicio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDSERVICIO")
     private BigInteger idservicio;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "FECHAINICIO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicio;
@@ -182,7 +187,7 @@ public class TblEmpleadoxservicio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.admin.pruebainsert.TblEmpleadoxservicio[ idempleadoxservicio=" + idempleadoxservicio + " ]";
+        return idempleadoxservicio.toString();
     }
     
 }

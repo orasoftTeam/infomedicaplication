@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+        #{bundle['mtoServicioTitulo']}
+    </ui:define>
+
+    <ui:define name="body"  >
+        <f:metadata>
+        </f:metadata>
+
+        <adm:breadcrumb title="#{bundle['mtoServicioTitulo']}" link="cadastro-default.xhtml?id="/>
+        <h:form id="form" prependId="false" >
+
+            <p:focus/>
+
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="#{bundle['lblNuevo']}" update="@form" actionListener="#{paisController.limpiarDatos}"
+                                         ajax="true"
+                                         icon="fa fa-check" styleClass="btn-primary" disabled="true"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblGuardar']}" update="@form" actionListener="#{empleadoController.guardarServicio}"
+                                         ajax="true"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblVer']}" update="@form" actionListener="#{paisController.validarSeleccion}"
+                                         ajax="true"
+                                         icon="ui-icon-search" styleClass="btn-primary" disabled="true"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="#{bundle['lblCancelar']}" 
+                                         action="#{paisController.guardarPais}"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                    </div>
+
+                    <!--
+                    
+                    <p:splitButton value="Salvar" update="@form"
+                                   icon="fa fa-check"
+                                   styleClass="hidden-md hidden-lg btn-primary">
+                        <p:menuitem value="Excluir"
+                                    process="@this"
+                                    icon="fa fa-trash"/>
+                        <p:separator/>
+                        <p:menuitem value="Voltar" action="/faces/index?faces-redirect=true" process="@this"
+                                    icon="fa fa-close"/>
+                    </p:splitButton>
+                    
+                    -->
+
+
+
+                    <p:separator/>
+                    <p:tabView id="tabEmp">
+                        <p:tab title="#{bundle['lblListServicios']}">
+                            <div id="datatable-single">
+                                <p:dataTable id="empDT2" var="empleado" value="#{empleadoController.listaEmpleado2}" paginator="true"
+                                             paginatorPosition="bottom" 
+                                             rows="5" >
+                                    <f:facet name="header">
+                                        #{bundle['lblListaEmpleado']}
+                                    </f:facet>
+                                    <p:column headerText="#{bundle['duiEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                        <h:outputText value="#{empleado.duiempleado}" />
+                                    </p:column>
+                                    <p:column headerText="#{bundle['nomEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                        <h:outputText value="#{empleado.nombreempleado}" />
+                                    </p:column>
+                                    <p:column headerText="#{bundle['apeEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                        <h:outputText value="#{empleado.apellidoempleado}" />
+                                    </p:column>
+                                    <p:column headerText="#{bundle['fechaNac']}" sortBy="#{empleado.nombreempleado}">
+                                        <h:outputText value="#{empleado.fechanacimientoempleado}" />
+                                    </p:column>
+                                    <p:column style="width:50px">
+                                        <p:commandButton action="#{empleadoController.obtenerServiciosEmp}" update="tabEmp:servicioDT2 tabEmp:horarioDT"  icon="ui-icon-search" title="View">
+                                            <f:setPropertyActionListener value="#{empleado}" target="#{empleadoController.selectEmp2}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+
+                            <div id="datatable-single">
+                                <p:dataTable id="servicioDT2" var="servicios" value="#{empleadoController.listaServicios2}" paginator="true"
+                                             paginatorPosition="bottom" 
+                                             rows="5" >
+                                    <f:facet name="header">
+                                        #{bundle['lblListaServicio']}
+                                    </f:facet>
+                                    <p:column headerText="#{bundle['nomServicio']}" sortBy="#{servicios.nombreservicio}">
+                                        <h:outputText value="#{servicios.nombreservicio}" />
+                                    </p:column>
+                                    <p:column style="width:50px">
+                                        <p:commandButton action="#{empleadoController.eliminarServicio}" update="@form"  icon="ui-icon-close" title="#{bundle['lblEliminar']}">
+                                            <f:setPropertyActionListener value="#{servicios}" target="#{empleadoController.servicio2}" />
+                                        </p:commandButton>
+                                        <p:commandButton action="#{empleadoController.obtenerHorariosServ}" update="tabEmp:horarioDT"  icon="ui-icon-search" title="#{bundle['lblVer']}">
+                                            <f:setPropertyActionListener value="#{servicios}" target="#{empleadoController.servicio2}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+
+                            <div id="datatable-single">
+                                <p:dataTable  id="horarioDT" var="horarios" value="#{empleadoController.listaHorarios2}" paginator="true"
+                                              paginatorPosition="bottom" 
+                                              rows="5" >
+                                    <f:facet name="header">
+                                        #{bundle['lblHorarios']}
+                                    </f:facet>
+                                    <p:column headerText="#{bundle['lblDia']}" sortBy="#{horarios.nombreDia}">
+                                        <h:outputText value="#{horarios.nombreDia}" />
+                                    </p:column>
+                                    <p:column headerText="#{bundle['lblHoraIni']}" sortBy="#{horarios.formathorainicio}">
+                                        <h:outputText value="#{horarios.formathorainicio}" />
+                                    </p:column>
+                                    <p:column headerText="#{bundle['lblHoraFin']}" sortBy="#{horarios.formathorafin}">
+                                        <h:outputText value="#{horarios.formathorafin}" />
+                                    </p:column>
+                                    <p:column style="width:50px">
+                                        <p:commandButton action="#{empleadoController.eliminarHorario}" update="@form"  icon="ui-icon-close" title="#{bundle['lblEliminar']}">
+                                            <f:setPropertyActionListener value="#{horarios}" target="#{empleadoController.horaxserv2}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{bundle['lblAgregarServicios']}">
+                            <div class="ui-g ui-fluid">
+                                <div id="datatable-single">
+                                    <p:dataTable id="empDT" var="empleado" value="#{empleadoController.listaEmpleado}" paginator="true"
+                                                 paginatorPosition="bottom" 
+                                                 selection="#{empleadoController.selectEmp}" rowKey="#{empleado.idempleado}" rows="5" >
+                                        <f:facet name="header">
+                                            #{bundle['lblListaEmpleado']}
+                                        </f:facet>
+                                        <p:column selectionMode="single" style="width: 42px" 
+                                                  styleClass="align-center"
+                                                  priority="1" />
+                                        <p:column headerText="#{bundle['duiEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                            <h:outputText value="#{empleado.duiempleado}" />
+                                        </p:column>
+                                        <p:column headerText="#{bundle['nomEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                            <h:outputText value="#{empleado.nombreempleado}" />
+                                        </p:column>
+                                        <p:column headerText="#{bundle['apeEmpleado']}" sortBy="#{empleado.nombreempleado}">
+                                            <h:outputText value="#{empleado.apellidoempleado}" />
+                                        </p:column>
+                                        <p:column headerText="#{bundle['fechaNac']}" sortBy="#{empleado.nombreempleado}">
+                                            <h:outputText value="#{empleado.fechanacimientoempleado}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                                <div class="ui-g-12">
+                                    <p:outputLabel for="tipoS" value="#{bundle['nomTipoServicio']}"/>
+                                    <p:selectOneMenu id="tipoS" value="#{empleadoController.tipoServicio.idtiposervicio}" effect="fold">
+                                        <p:ajax event="change" update="tabEmp:servicioDT" listener="#{empleadoController.setServices}"></p:ajax>
+                                        <f:selectItems var="tipos" value="#{empleadoController.listaTipoServicios}" itemLabel="#{tipos.nombretiposervicio}" itemValue="#{tipos.idtiposervicio}" />
+                                    </p:selectOneMenu>
+                                    <p:separator/>
+                                    <div id="datatable-single">
+                                        <p:dataTable id="servicioDT" var="servicios" value="#{empleadoController.listaServicios}" paginator="true"
+                                                     paginatorPosition="bottom" 
+                                                     selection="#{empleadoController.servicio}" rowKey="#{servicios.idservicio}" rows="5" >
+                                            <f:facet name="header">
+                                                #{bundle['lblListaServicio']}
+                                            </f:facet>
+                                            <p:column selectionMode="single" style="width: 42px" 
+                                                      styleClass="align-center"
+                                                      priority="1" />
+                                            <p:column headerText="#{bundle['nomServicio']}" sortBy="#{servicios.nombreservicio}">
+                                                <h:outputText value="#{servicios.nombreservicio}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                    <p:outputLabel for="dias" value="#{bundle['lblDia']}"/>
+                                    <p:selectOneMenu id="dias" value="#{empleadoController.horaxserv.dia}" style="width:160px">
+                                        <f:selectItem itemLabel="#{bundle['lblLunVier']}" itemValue="8" />
+                                        <f:selectItem itemLabel="#{bundle['lblLunSab']}" itemValue="9" />
+                                        <f:selectItem itemLabel="#{bundle['lblLunes']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{bundle['lblMartes']}" itemValue="2" />
+                                        <f:selectItem itemLabel="#{bundle['lblMiercoles']}" itemValue="3" />
+                                        <f:selectItem itemLabel="#{bundle['lblJueves']}" itemValue="4" />
+                                        <f:selectItem itemLabel="#{bundle['lblViernes']}" itemValue="5" />
+                                        <f:selectItem itemLabel="#{bundle['lblSabado']}" itemValue="6" />
+                                        <f:selectItem itemLabel="#{bundle['lblDomingo']}" itemValue="7" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="#{bundle['lblHoraIni']}" for="horaIni" />
+                                    <p:calendar id="horaIni" value="#{empleadoController.horaIni}" pattern="HH:mm" timeOnly="true"  >
+                                        <p:ajax event="dateSelect" listener="#{empleadoController.horaIniChange}">
+                                        </p:ajax>
+                                    </p:calendar>
+                                    <p:outputLabel value="#{bundle['lblHoraFin']}" for="horaFin" />
+                                    <p:calendar id="horaFin" value="#{empleadoController.horaFin}" pattern="HH:mm" timeOnly="true"  >
+                                        <p:ajax event="dateSelect" listener="#{empleadoController.horaFinChange}">
+                                        </p:ajax>
+                                    </p:calendar>
+                                </div>
+                            </div>
+                        </p:tab>
+                    </p:tabView>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

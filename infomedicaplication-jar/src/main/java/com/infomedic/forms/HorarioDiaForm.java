@@ -4,14 +4,18 @@
  * and open the template in the editor.
  */
 package com.infomedic.forms;
+
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  *
- * @author dell
+ * @author LAP
  */
-public class TipoEmpleadoForm {
-    private @Setter @Getter String idtipoempleado;
-    private @Setter @Getter String nombretipo;
-    private @Setter @Getter String estadotipo;
+public class HorarioDiaForm {
+    private @Getter @Setter String idhorarioxempleadoxservicio;
+    private @Getter @Setter String dia;
+    private @Getter @Setter String horainicio;
+    private @Getter @Setter String horafin;
+    
 }
