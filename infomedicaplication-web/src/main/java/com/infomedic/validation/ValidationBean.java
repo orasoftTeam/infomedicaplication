@@ -25,6 +25,7 @@ import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.apache.commons.codec.binary.Base64;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -43,6 +44,7 @@ public class ValidationBean {
                 flag = true;
             }
         } else {
+            lanzarMensaje(tipoMsg, tituloMsg, descMsg);
             flag = false;
         }
         return flag;
@@ -232,5 +234,9 @@ public class ValidationBean {
             //fecha="";
         }
         return fecha;
+    }
+    
+    public void updateComponent(String id){
+        RequestContext.getCurrentInstance().update(id);
     }
 }

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.infomedic.filter.LoginFilter</filter-class>
+    </filter>    
+    <!-- Set the login filter to secure all the pages in the /secured/* path of the application  -->
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/pages/*</url-pattern>
+    </filter-mapping>      
+    
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
@@ -37,6 +47,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>/login.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>

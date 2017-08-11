@@ -12,8 +12,33 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <pe:gravatar id="userImage"
                              value="nonexisting"/>
-                <span class="hidden-xs">Karan Alves Pereira</span>
+                <span class="hidden-xs">#{login.nombreUsuario}</span>
             </a>
+            <ul class="dropdown-menu">
+                <li class="user-header">
+                    <div class="hidden-xs">
+                        <pe:gravatar style="border-radius: 50%"
+                                     value="prueba@gmail.com"/>
+                    </div>
+                    <p>
+                        #{login.nombreUsuario}
+                    </p>
+                </li>
+                <li class="user-footer">
+                    <h:form prependId="false">
+                        <!--
+                        <div class="pull-left">
+                            <p:commandLink styleClass="btn btn-danger" value="Change password"/>
+                        </div>
+                        -->
+                        <div class="pull-right">
+                            <p:commandLink id="logout" action="#{login.doLogout}" title="Logoff">
+                                <i class="fa fa-sign-out fa-2x"></i>
+                            </p:commandLink>
+                        </div>
+                    </h:form>
+                </li>
+            </ul>
         </li>
     </ul>
 

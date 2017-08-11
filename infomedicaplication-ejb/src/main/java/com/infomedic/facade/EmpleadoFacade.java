@@ -46,8 +46,10 @@ public class EmpleadoFacade extends AbstractFacade<TblEmpleado, EmpleadoForm> {
         return em;
     }
     
-    public List<EmpleadoForm> obtenerEmpleados() {
-        Query q= getEntityManager().createNativeQuery("select * from tbl_empleado where estadoempleado='A'", TblEmpleado.class);
+    public List<EmpleadoForm> obtenerEmpleados(String idcompany) {
+        Query q= getEntityManager().createNativeQuery("select * from tbl_empleado where estadoempleado='A'"
+                + "and idcompany=?", TblEmpleado.class);
+        q.setParameter(1, new BigInteger(idcompany));
         List<TblEmpleado> listaTmpEmp;
         List<EmpleadoForm> listaTmpEmpForm;
         
@@ -112,7 +114,7 @@ public class EmpleadoFacade extends AbstractFacade<TblEmpleado, EmpleadoForm> {
         entity.setGeneroempleado(dto.getGeneroempleado().toUpperCase().charAt(0));
         entity.setEstadoempleado('A');
         //Cambiar despues el id de la compania
-        entity.setIdcompany(BigInteger.ONE);
+        entity.setIdcompany(new BigInteger(dto.getIdcompany()));
         entity.setNumeroisssempleado("");
         entity.setFechanacimientoempleado(convertirFecha(dto.getFechanacimientoempleado()));
         entity.setFechainicio(convertirFecha(dto.getFechainicio()));

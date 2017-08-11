@@ -1,10 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="WEB-INF/templates/template.xhtml">
+                template="WEB-INF/templates/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="head-end">
         <ui:param name="renderBreadCrumb" value="false"/>
+        <f:event type="preRenderView" listener="#{login.redirectLogin}" />
     </ui:define>
 
     <ui:define name="title">

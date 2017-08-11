@@ -7,21 +7,32 @@ package com.infomedic.controller;
 
 import com.infomedic.facade.EmpleadoEspecialidadFacade;
 import com.infomedic.facade.EmpleadoFacade;
+import com.infomedic.facade.EmpleadoXServicioFacade;
 import com.infomedic.facade.EspecialidadFacade;
 import com.infomedic.facade.FormacionEmpleadoFacade;
+import com.infomedic.facade.HorarioXServicioFacade;
+import com.infomedic.facade.ServicioFacade;
 import com.infomedic.facade.TelefonoEmpleadoFacade;
 import com.infomedic.facade.TipoEmpleadoFacade;
+import com.infomedic.facade.TipoServicioFacade;
 import com.infomedic.forms.DepartamentoForm;
 import com.infomedic.forms.EmpleadoForm;
+import com.infomedic.forms.EmpleadoServicioForm;
 import javax.inject.Named;
 import com.infomedic.forms.EspecialidadForm;
 import com.infomedic.forms.FormacionProfesionalForm;
+import com.infomedic.forms.HorarioXServicioForm;
+import com.infomedic.forms.ServicioForm;
 import com.infomedic.forms.TelefonoXEmpleadoForm;
 import com.infomedic.forms.TipoEmpleadoForm;
+import com.infomedic.forms.TipoServicioForm;
 import com.infomedic.validation.ValidationBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -39,6 +50,12 @@ import org.primefaces.event.UnselectEvent;
 @Named(value = "empleadoController")
 @ViewScoped
 public class EmpleadoController implements Serializable {
+
+    @EJB
+    private TipoServicioFacade tipoServicioFacade;
+    
+    @EJB
+    private ServicioFacade servicioFacade;
 
     @EJB
     private FormacionEmpleadoFacade formacionEmpleadoFacade;
@@ -61,63 +78,70 @@ public class EmpleadoController implements Serializable {
     @EJB
 
     private EmpleadoEspecialidadFacade empespFacade;
+    
+    @EJB
+    
+    private EmpleadoXServicioFacade empservFacade;
+    
+    @EJB
+    private HorarioXServicioFacade horaservFacade;
+    
 
-    private @Getter
-    @Setter
-    EmpleadoForm emp = new EmpleadoForm();
 
-    private @Getter
-    @Setter
-    EmpleadoForm selectEmp = new EmpleadoForm();
-    private @Getter
-    @Setter
-    List<EmpleadoForm> listaEmpleado = new ArrayList<EmpleadoForm>();
-    private @Getter
-    @Setter
-    List<TipoEmpleadoForm> listaTipoEmpleado = new ArrayList<TipoEmpleadoForm>();
-    private @Getter
-    @Setter
-    List<TelefonoXEmpleadoForm> listaTelefono = new ArrayList<TelefonoXEmpleadoForm>();
+    private @Getter @Setter EmpleadoForm emp = new EmpleadoForm();
 
-    private @Getter
-    @Setter
-    List<FormacionProfesionalForm> listaFormacion = new ArrayList<FormacionProfesionalForm>();
+    private @Getter @Setter EmpleadoForm selectEmp = new EmpleadoForm();
+    private @Getter @Setter List<EmpleadoForm> listaEmpleado = new ArrayList<EmpleadoForm>();
+    
+    private @Getter @Setter EmpleadoForm selectEmp2 = new EmpleadoForm();
+    private @Getter @Setter List<EmpleadoForm> listaEmpleado2 = new ArrayList<EmpleadoForm>();
+    
+    private @Getter @Setter List<TipoServicioForm> listaTipoServicios= new ArrayList<>();
+    
+    private @Getter @Setter List<ServicioForm> listaServicios= new ArrayList<ServicioForm>();
+    private @Getter @Setter List<ServicioForm> listaServicios2= new ArrayList<ServicioForm>();
+    private @Getter @Setter TipoServicioForm tipoServicio= new TipoServicioForm();
+    
+    private @Getter @Setter ServicioForm servicio= new ServicioForm();
+    private @Getter @Setter ServicioForm servicio2= new ServicioForm();
+    private @Getter @Setter List<TipoEmpleadoForm> listaTipoEmpleado = new ArrayList<TipoEmpleadoForm>();
+    private @Getter @Setter List<TelefonoXEmpleadoForm> listaTelefono = new ArrayList<TelefonoXEmpleadoForm>();
+    
+    private @Getter @Setter List<EmpleadoServicioForm> listaEmpServ= new ArrayList<>();
 
-    private @Getter
-    @Setter
-    FormacionProfesionalForm selectFormacion = new FormacionProfesionalForm();
+    private @Getter @Setter List<FormacionProfesionalForm> listaFormacion = new ArrayList<FormacionProfesionalForm>();
 
-    private @Getter
-    @Setter
-    FormacionProfesionalForm formacion = new FormacionProfesionalForm();
+    private @Getter @Setter FormacionProfesionalForm selectFormacion = new FormacionProfesionalForm();
 
-    private @Getter
-    @Setter
-    TelefonoXEmpleadoForm selectedTel = new TelefonoXEmpleadoForm();
+    private @Getter @Setter FormacionProfesionalForm formacion = new FormacionProfesionalForm();
 
-    private @Getter
-    @Setter
-    String tipoEmpleado;
-    private @Getter
-    @Setter
-    String telefono;
+    private @Getter @Setter TelefonoXEmpleadoForm selectedTel = new TelefonoXEmpleadoForm();
+    
+    private @Getter @Setter HorarioXServicioForm horaxserv= new HorarioXServicioForm();
+    
+    private @Getter @Setter HorarioXServicioForm horaxserv2= new HorarioXServicioForm();
+    
+    private @Getter @Setter List<HorarioXServicioForm> listaHorarios= new ArrayList<HorarioXServicioForm>();
+    
+     private @Getter @Setter List<HorarioXServicioForm> listaHorarios2= new ArrayList<HorarioXServicioForm>();
+    
+    private @Getter @Setter Date horaIni;
+    private @Getter @Setter Date horaFin;
+    
+    
+    private @Getter @Setter String tipoEmpleado;
+    private @Getter @Setter String telefono;
 
-    private @Getter
-    @Setter
-    List<EspecialidadForm> listaEspecialidad = new ArrayList<EspecialidadForm>();
+    private @Getter @Setter List<EspecialidadForm> listaEspecialidad = new ArrayList<EspecialidadForm>();
 
-    private @Getter
-    @Setter
-    String profesional = "";
+    private @Getter @Setter String profesional = "";
 
-    private @Getter
-    @Setter
-    String especialidad;
+    private @Getter @Setter String especialidad;
 
-    private @Getter
-    @Setter
-    boolean isEmpleado = false;
+    private @Getter @Setter boolean isEmpleado = false;
     //private @Getter @Setter String nomEspecialidad;
+    
+    private @Getter @Setter String idcompany= "1";
 
     public EmpleadoController() {
     }
@@ -126,13 +150,61 @@ public class EmpleadoController implements Serializable {
     public void init() {
         listaTipoEmpleado = tipoEmpleadoFacade.obtenerTiposEmpleado();
         listaEspecialidad = especialidadFacade.obtenerEspecialidades();
-        listaEmpleado = empleadoFacade.obtenerEmpleados();
+        listaEmpleado = empleadoFacade.obtenerEmpleados(idcompany);
+        listaEmpleado2 = empleadoFacade.obtenerEmpleados(idcompany);
+        listaTipoServicios= tipoServicioFacade.obtenerTiposServicio();
+        
+        if(!listaTipoServicios.isEmpty()){
+            listaServicios= servicioFacade.findByTipoServicio(listaTipoServicios.get(0).getIdtiposervicio());
+        }
         //this.listaEspecialidad = this.EspecFacade.obtenerEspecialidades();
     }
+    
+    public void obtenerServiciosEmp(){
+        listaHorarios2= new ArrayList<>();
+        listaServicios2= servicioFacade.findByIdEmpleado(selectEmp2.getIdempleado());
+    }
+    
+    public void obtenerHorariosServ(){
+        if(servicio2!=null && servicio2.getIdservicio()!=null)
+            listaHorarios2= horaservFacade.getAllByServ(servicio2.getIdservicio());
+        //validationBean.updateComponent("horarioDT");
+        return;
+    }
+    
+    public void eliminarHorario(){
+        if(horaservFacade.eliminarHorariosById(horaxserv2.getIdhorarioxempleadoxservicio())){
+            validationBean.lanzarMensaje("info", "titleHorariosServicios", "lblRegDeleteExitoso");
+            listaHorarios2= horaservFacade.getAllByServ(servicio2.getIdservicio());
+        }
+        else{
+           validationBean.lanzarMensaje("error", "titleHorariosServicios", "lblRegDeleteError"); 
+        }
+    }
+    
+    public void eliminarServicio(){
+        empservFacade.setEmpleado(empleadoFacade.buscarEmpleado(selectEmp2.getDuiempleado(), selectEmp2.getNitempleado()));
+        EmpleadoServicioForm obj= empservFacade.getByIdEmpServ(selectEmp2.getIdempleado(), servicio2.getIdservicio()).get(0);
+        if(empservFacade.agregarServicioEmp(obj)){
+            listaServicios2= servicioFacade.findByIdEmpleado(selectEmp2.getIdempleado());
+            if(horaservFacade.eliminarHorariosXServicio(obj.getIdempleadoxservicio())){
+                listaHorarios= new ArrayList<>();
+                validationBean.lanzarMensaje("info", "titleHorariosServicios", "lblRegDeleteExitoso");
+            }
+            else{
+                validationBean.lanzarMensaje("error", "titleHorariosServicios", "lblRegDeleteError");
+            }
+        }
+        else{
+            validationBean.lanzarMensaje("error", "titleHorariosServicios", "lblRegDeleteError");
+        }
+    }
+    
 
     public boolean agregarEmpleado() {
         boolean flag = true;
         emp.setFechainicio(validationBean.obtenerFechaActual());
+        emp.setIdcompany(idcompany);
         // empleadoFacade.setEmpleado(empleadoFacade.buscarEmpleado(emp.getDuiempleado(), emp.getNitempleado()));
         if (tipoEmpleado != null && !tipoEmpleado.equals("")) {
             empleadoFacade.setTipoEmpleado(tipoEmpleadoFacade.find(new BigDecimal(getTipoEmpleado())));
@@ -165,12 +237,6 @@ public class EmpleadoController implements Serializable {
             validationBean.lanzarMensaje("warn", "empleadoTitulo", "lblTipoEmpleadoReq");
             flag = false;           
         }
-        /*
-        telefonoEmpleadoFacade.setEmpleado(empleadoFacade.getEmpleado());
-        telefonoEmpleadoFacade.agregarTelefonoEmpleado(listaTelefono);
-        formacionEmpleadoFacade.setEmpleado(telefonoEmpleadoFacade.getEmpleado());
-        formacionEmpleadoFacade.agregarFormacion(listaFormacion);
-         */
         return flag;
     }
 
@@ -234,16 +300,6 @@ public class EmpleadoController implements Serializable {
     public Integer buscarFormacion(List<FormacionProfesionalForm> lista, FormacionProfesionalForm fp) {
         Integer i = 0;
         for (FormacionProfesionalForm obj : lista) {
-            /*
-            System.out.println("Objeto-------------");
-            System.out.println(obj.getInstitucionestudio());
-            System.out.println(obj.getConceptoestudio());
-            System.out.println(obj.getAnioestudio());
-            System.out.println("Formulario-------------");
-            System.out.println(fp.getInstitucionestudio());
-            System.out.println(fp.getConceptoestudio());
-            System.out.println(fp.getAnioestudio());
-             */
             if (obj.getInstitucionestudio().equals(fp.getInstitucionestudio())
                     && obj.getConceptoestudio().equals(fp.getConceptoestudio())
                     && obj.getAnioestudio().equals(fp.getAnioestudio())) {
@@ -306,6 +362,7 @@ public class EmpleadoController implements Serializable {
 
     public void validarCamposFormulario() {
         boolean flag = true;
+        System.out.println("Tipo de Empleado:       "+ getTipoEmpleado());
         if (validationBean.validarCampoVacio(getTipoEmpleado(), "warn", "empleadoTitulo", "lblTipoEmpleadoReq")) {
             if (validationBean.validarCampoVacio(emp.getNombreempleado(), "warn", "empleadoTitulo", "lblReqNom")
                     && validationBean.validarLongitudCampo(emp.getNombreempleado(), 4, 50, "warn", "empleadoTitulo", "lblLongitud")) {
@@ -316,7 +373,7 @@ public class EmpleadoController implements Serializable {
                         if (validationBean.validarLongitudCampo(emp.getGeneroempleado(), 1, 1, "warn", "empleadoTitulo", "lblReqGen")) {
                             if (validationBean.validarFecha(emp.getFechanacimientoempleado(), "warn", "empleadoTitulo", "lblInvFecha")) {
                                 if (agregarEmpleado()) {
-                                    listaEmpleado = empleadoFacade.obtenerEmpleados();
+                                    listaEmpleado = empleadoFacade.obtenerEmpleados(idcompany);
                                     validationBean.lanzarMensaje("info", "empleadoTitulo", "lblRegExitoso");
                                     resetear();
                                 }
@@ -364,5 +421,189 @@ public class EmpleadoController implements Serializable {
             // nomDepartamento= df.getNombredepartamento();
         }
     }
+    
+    public List<TipoServicioForm> completeTipo(String query){
+        List<TipoServicioForm> tipos= new ArrayList<>();
+        for(TipoServicioForm obj: listaTipoServicios){
+            if(obj.getNombretiposervicio().toUpperCase().startsWith(query)){
+                tipos.add(obj);
+            }
+        }
+        return tipos;
+    }
+    
+    public void setServices(){
+        listaServicios= servicioFacade.findByTipoServicio(tipoServicio.getIdtiposervicio());
+    }
+    
+    public void setServicesHour(){
+        //listaServicios= servicioFacade.findByTipoServicio(tipoServicio.getIdtiposervicio());
+        horaxserv.setNomservicio(servicioFacade.findById(servicio.getIdservicio()).get(0).getNombreservicio());
+    }
 
+    public void horaIniChange() {
+        System.err.println(horaIni);
+        String temp = horaIni.toString().replace(" ", "-");
+        System.err.println(temp);
+        String[] cad = temp.split("-");
+        String[] time = cad[3].split(":");
+        System.err.println(time);
+        horaxserv.setHorainicio(new BigInteger(time[0] + time[1]).toString());
+        //selected.setHorafin2company(new BigInteger(time[0] + time[1]));
+        //System.err.println(cad[3]);
+    }
+    
+    public void horaFinChange() {
+        System.err.println(horaFin);
+        String temp = horaFin.toString().replace(" ", "-");
+        System.err.println(temp);
+        String[] cad = temp.split("-");
+        String[] time = cad[3].split(":");
+        System.err.println(time);
+        horaxserv.setHorafin(new BigInteger(time[0] + time[1]).toString());
+        //selected.setHorafin2company(new BigInteger(time[0] + time[1]));
+        //System.err.println(cad[3]);
+    }
+    
+    public Date formatTime(BigInteger horas) {
+        Date d;
+        if(horas!=null){
+        String time= horas.toString();
+        String hora="";
+        String minutos="";
+        if(time.length()==3){
+            hora= time.substring(0, 1);
+            minutos= time.substring(1,3);
+        }
+        else{
+           hora= time.substring(0, 2); 
+           minutos= time.substring(2,4);
+        }
+        //String minutos= time.substring(2,4);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, new Integer(hora));
+        cal.set(Calendar.MINUTE, new Integer(minutos));
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        d = cal.getTime();
+        }
+        else{
+          d= new Date();
+        }
+        return d;
+    }
+    
+    public void guardarServicio(){
+        if(selectEmp!=null && selectEmp.getIdempleado()!=null){
+            if(servicio!=null && servicio.getIdservicio()!=null){
+                if(horaxserv!=null && (horaxserv.getHorainicio()!=null && !horaxserv.getHorainicio().equals(""))
+                        &&
+                        (horaxserv.getHorafin()!=null && !horaxserv.getHorafin().equals(""))){
+                    List<EmpleadoServicioForm> temp= empservFacade.getByIdEmpServ(selectEmp.getIdempleado(), servicio.getIdservicio());
+                    if(temp.isEmpty()){
+                        EmpleadoServicioForm empSer= new EmpleadoServicioForm();
+                        empSer.setIdservicio(servicio.getIdservicio());
+                        empservFacade.setEmpleado(empleadoFacade.buscarEmpleado(selectEmp.getDuiempleado(), selectEmp.getNitempleado()));
+                        if(empservFacade.agregarServicioEmp(empSer)){
+                            List<EmpleadoServicioForm> temp2= empservFacade.getByIdEmpServ(selectEmp.getIdempleado(), servicio.getIdservicio());
+                            HorarioXServicioForm horxserv= new HorarioXServicioForm();
+                            horxserv.setIdempleadoxservicio(temp2.get(0).getIdempleadoxservicio());
+                            horxserv.setDia(horaxserv.getDia());
+                            horxserv.setHorainicio(horaxserv.getHorainicio());
+                            horxserv.setHorafin(horaxserv.getHorafin());
+                            if(horaservFacade.agregarHorarioServ(horxserv)){
+                                limpiarServicios();
+                                validationBean.lanzarMensaje("info", "titleHorariosServicios", "lblExitoServ");
+                            }
+                            else{
+                               validationBean.lanzarMensaje("warn", "titleHorariosServicios", "lblRegError"); 
+                            }
+                        }
+                        else{
+                           validationBean.lanzarMensaje("error", "titleHorariosServicios", "lblErrorAddService"); 
+                        }
+                    }
+                    else{
+                      //if (temp.get(0).get)
+                      List<HorarioXServicioForm> listaHor= horaservFacade.getAllByServ(servicio.getIdservicio());
+                      //List<HorarioXServicioForm> listaHor= horaservFacade.getAllByServDiaHora(servicio.getIdservicio(),horaxserv.getDia(), horaxserv.getHorainicio());
+                      if(listaHor.size()==1 && (new Integer(listaHor.get(0).getDia())==8|| new Integer(listaHor.get(0).getDia())==9)){
+                          validationBean.lanzarMensaje("warn", "titleHorariosServicios", "lblErrorSem");
+                      }
+                      else{
+                          if(!(new Integer(horaxserv.getDia())==8 || new Integer(horaxserv.getDia())==9)){
+                                listaHor= horaservFacade.getAllByServDiaHora(servicio.getIdservicio(),horaxserv.getDia(), horaxserv.getHorainicio());
+                                boolean flag= buscarHoras(horaxserv.getHorainicio(), horaxserv.getHorafin(), listaHor);
+                                if(flag){
+                                    HorarioXServicioForm objtmp= listaHor.get(0);
+                                    objtmp.setDia(horaxserv.getDia());
+                                    objtmp.setHorainicio(horaxserv.getHorainicio());
+                                    objtmp.setHorafin(horaxserv.getHorafin());
+                                    if (horaservFacade.agregarHorarioServ(objtmp)){
+                                        limpiarServicios();
+                                        validationBean.lanzarMensaje("info", "titleHorariosServicios", "lblRegExitoso");
+                                    }
+                                    else{
+                                        validationBean.lanzarMensaje("error", "titleHorariosServicios", "lblRegError");
+                                    }
+                                }
+                                else{
+                                    validationBean.lanzarMensaje("warn", "titleHorariosServicios", "lblErrorHorAsig");
+                                }
+                          }
+                          else{
+                             validationBean.lanzarMensaje("warn", "titleHorariosServicios", "lblErrorSoloDia"); 
+                          }
+                      }   
+                    }
+                }
+                else{
+                   validationBean.lanzarMensaje("warn", "titleHorariosServicios", "lblHorasReq");  
+                }
+            }
+            else{
+               validationBean.lanzarMensaje("warn", "titleHorariosServicios", "lblServReq"); 
+            }
+        }
+        else{
+            validationBean.lanzarMensaje("warn", "titleHorariosServicios", "lblSelectEmpReq");
+        }
+    }
+    
+    public boolean buscarHoras(String horainicio, String horafin, List<HorarioXServicioForm> temp){
+        int i=0;
+        if(temp.size()==1){
+            return new Integer(horainicio) > new Integer(temp.get(0).getHorafin());
+           //return new Integer(temp.get(0).getHorainicio()) > new Integer(horafin);
+        }
+        else{
+            while(i<temp.size()){
+                if(i==temp.size()){
+                    if(new Integer(horainicio)> new Integer(temp.get(i).getHorafin())){
+                        return true;
+                    }
+                }
+                else{
+                    if(new Integer(horainicio)> new Integer(temp.get(i).getHorafin())
+                            && new Integer(horafin) < new Integer(i+1==temp.size()?temp.get(i).getHorafin() : temp.get(i+1).getHorafin())){
+                        return true;
+                    }
+                }
+                i++;
+            }
+        }
+        return false;
+    }
+    public void limpiarServicios(){
+       selectEmp = new EmpleadoForm();
+       servicio= new ServicioForm();
+       horaxserv= new HorarioXServicioForm();
+       selectEmp2 = new EmpleadoForm();
+       servicio2= new ServicioForm();
+       horaxserv2= new HorarioXServicioForm();
+       horaFin=null;
+       horaIni=null;
+       
+    }
 }

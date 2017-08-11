@@ -13,10 +13,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -41,6 +44,8 @@ public class TblTipoempleado implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "TIPOEMPLEADO_SEQ")
+    @SequenceGenerator(name = "TIPOEMPLEADO_SEQ", sequenceName = "SQE_IDTIPOEMP", allocationSize = 1)
     @Column(name = "IDTIPOEMPLEADO")
     private BigDecimal idtipoempleado;
     @Basic(optional = false)
@@ -48,6 +53,12 @@ public class TblTipoempleado implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "NOMBRETIPO")
     private String nombretipo;
+    
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 1)
+    @Column(name = "ESTADOTIPO")
+    private String estadotipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipoempleado",fetch=FetchType.LAZY)
     private List<TblEmpleado> tblEmpleadoList;
 
@@ -78,6 +89,16 @@ public class TblTipoempleado implements Serializable {
     public void setNombretipo(String nombretipo) {
         this.nombretipo = nombretipo;
     }
+
+    public String getEstadotipo() {
+        return estadotipo;
+    }
+
+    public void setEstadotipo(String estadotipo) {
+        this.estadotipo = estadotipo;
+    }
+    
+
 
     @XmlTransient
     public List<TblEmpleado> getTblEmpleadoList() {

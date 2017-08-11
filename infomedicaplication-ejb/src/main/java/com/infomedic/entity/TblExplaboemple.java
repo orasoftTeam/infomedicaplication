@@ -5,16 +5,20 @@
  */
 package com.infomedic.entity;
 
+import com.infomedic.forms.MenuForm;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,6 +30,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "TBL_EXPLABOEMPLE")
+@SqlResultSetMapping(
+        name = "MenuMapping",
+        classes = @ConstructorResult(
+                targetClass = MenuForm.class,
+                columns = {
+                    @ColumnResult(name = "nivel", type = String.class),
+                    @ColumnResult(name = "desaplic", type = String.class),
+                    @ColumnResult(name = "secuencia", type = String.class),
+                @ColumnResult(name = "codaplic", type = String.class),
+                @ColumnResult(name = "opcion", type = String.class),
+                @ColumnResult(name = "indforma", type = String.class),
+                @ColumnResult(name = "codmodulo", type = String.class)}))
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblExplaboemple.findAll", query = "SELECT t FROM TblExplaboemple t"),
