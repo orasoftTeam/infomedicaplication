@@ -22,6 +22,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -105,13 +106,16 @@ public class PacienteController implements Serializable {
 
     @EJB
     private ValidationBean vb;
+    
+    @Inject
+    private LoginController login;
 
     public PacienteController() {
     }
 
     @PostConstruct
     public void init() {
-        listaPaciente = pfacade.obtenerPacientes();
+        listaPaciente = pfacade.obtenerPacientes(login.getIdusuario());
 
         //System.out.println("com.infomedic.controller.PacienteController.init()");
     }
@@ -150,7 +154,7 @@ public class PacienteController implements Serializable {
                 vb.lanzarMensaje("info", "titleMsgExitoso", "lblRegExitoso");
                 //FacesContext context = FacesContext.getCurrentInstance();
                 //context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, vb.getMsgBundle("titleMsgExitoso"), vb.getMsgBundle("lblRegExitoso") + pf.getNumeroduipaciente()));
-                listaPaciente = pfacade.obtenerPacientes();
+                listaPaciente = pfacade.obtenerPacientes(login.getIdusuario());
                 //pf = new PacienteForm();
                 //this.insertExitoso = "PF('dlgSuccess').show();return false";
                 if (pf.getIdpaciente() == null) {
@@ -290,6 +294,8 @@ public class PacienteController implements Serializable {
         pf.setLugarnacimientopaciente(lugarNacPac.toUpperCase());
         pf.setNumeroduipaciente(numDuiPac);
         pf.setNombreresponsable(nomRespPac.toUpperCase());
+        pf.setIdusuario(String.valueOf(login.getIdusuario()));
+        System.out.println("com.infomedic.controller.PacienteController.asignacionSinEstado()");
     }
 
     public void validarSeleccionEliminar() {
@@ -303,7 +309,7 @@ public class PacienteController implements Serializable {
             pf.setEstadopaciente("I");
             if (pfacade.agregarPaciente(pf)) {
                 vb.lanzarMensaje("info", "titleMsgExitoso", "lblRegElim");
-                listaPaciente = pfacade.obtenerPacientes();
+                listaPaciente = pfacade.obtenerPacientes(login.getIdusuario());
                 //pf = new PacienteForm();
                 limpiarDatos();
             } else {
@@ -314,7 +320,7 @@ public class PacienteController implements Serializable {
 
     }
 
-    public String validarSeleccion() {
+    public void validarSeleccion() {
         String redirect = null;
         if (pf == null) {
             vb.lanzarMensaje("warn", "titleMsgAdv", "lblPacienteReq");
@@ -341,9 +347,9 @@ public class PacienteController implements Serializable {
             nomRespPac = pf.getNombreresponsable();
             estadoPac = pf.getEstadopaciente(); //AQUI SI SE SETEA EL ESTADO 
             listaTels = tpfacade.findByIdPac(pf.getIdpaciente());
-            redirect = "agregarPaciente?faces-redirect=true";
+            //redirect = "agregarPaciente?faces-redirect=true";
         }
-        return redirect;
+        //return redirect;
     }
 
     public PacienteForm getPf() {

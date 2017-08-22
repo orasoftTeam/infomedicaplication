@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">
+        <!--titulo-->
+        #{bundle['lblRegNewUser']}
+    </ui:define>        
+    <!--<ui:define name="head-end">
+        <style type="text/css">
+          
+            .gridUser{
+                
+              
+            }
+        
+
+
+        </style>
+    </ui:define>-->
+    <ui:define name="body">
+        <f:metadata>
+        </f:metadata>
+        <adm:breadcrumb title="#{bundle['lblRegNewUser']}" link="cadastro-default.xhtml?id="/>
+        <h:form id="form" prependId="false" >   
+        <p:focus/>  
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div id="main-buttons" class="hidden-sm hidden-xs">
+                    <p:commandButton  value="Registrar" actionListener="#{usuarioController.guardarUsuario()}"
+                      icon="fa fa-check" styleClass="btn-primary" ajax="true" update="@form" />
+                    <p:spacer width="5"/>
+                    <p:commandButton  value="Limpiar" ajax="true" update="@form"
+                                      icon="fa fa-check" styleClass="btn-primary" actionListener="#{usuarioController.limpiarDatos()}"/>
+                </div>  
+                <p:separator/>
+                
+                <div class="ui-g ui-fluid">
+                    <div class="gridUser">
+                    <p:panelGrid columns="2" >
+                        <p:outputLabel for="username" value="Nombre de usuario" />
+                        <p:inputText id="username"   styleClass="form-control" value="#{usuarioController.nombreusuario}" maxlength="15" 
+                                     onkeyup="remplazar()" />
+                        <p:outputLabel for="password" value="Password"  />
+                        <p:password id="password"   styleClass="form-control" value="#{usuarioController.contrausuario}" maxlength="15" />
+                        <p:outputLabel for="password2" value="Repetir Password" />
+                        <p:password id="password2"   styleClass="form-control" value="#{usuarioController.contrausuario2}" maxlength="15" />
+                        <p:outputLabel for="correo" value="Correo Electronico" />
+                        <p:inputText id="correo"   styleClass="form-control"  value="#{usuarioController.correousuario}" maxlength="50"/>
+                    </p:panelGrid>
+                    </div>
+                </div>
+            </div>   
+            
+        </div>
+        </h:form>
+        
+        <script>
+             function remplazar(){
+             var val = $('#username').val();
+             var al = val.replace(/\s/g, '');
+             
+             $('#username').val(al);
+            }
+        </script>
+    </ui:define>
+</ui:composition>
+

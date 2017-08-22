@@ -69,6 +69,7 @@ public class LoginController implements Serializable{
     String password;
     
     private @Getter @Setter String nombreUsuario;
+    private @Getter @Setter Integer idusuario;
     
     private @Getter @Setter boolean loggedIn;
 
@@ -135,10 +136,11 @@ public class LoginController implements Serializable{
             // pag="faces/login.xhtml";
            // JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("titleUserNotFound"));
         } else if (usuario.getIdusuario() != null) {
-            pag = "/pages/empleado/agregarEmpleado.xhtml";
+            pag = "/pages/paciente/agregarPaciente.xhtml";
             setIdRol(usuario.getIdrol());
             setIdCompany(usuario.getIdcompany());
             setNombreUsuario(usuario.getNombre());
+            setIdusuario(Integer.valueOf(usuario.getIdusuario()));
             listaModulos = menuFacade.buscarModulos(idRol, idCompany);
             //cargarMenus();
             setLoggedIn(true);

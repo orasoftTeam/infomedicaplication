@@ -9,6 +9,7 @@ import com.infomedic.entity.TblPaciente;
 import com.infomedic.forms.PacienteForm;
 import com.infomedic.utily.facade.AbstractFacade;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
     return em;
     }
     TblPaciente pac;
+    
 
     public TblPaciente getPac() {
         return pac;
@@ -101,15 +103,16 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
                 paciente.setNumeroduipaciente(pf.getNumeroduipaciente());
                 paciente.setEstadopaciente(pf.getEstadopaciente().charAt(0));
                 paciente.setNombreresponsable(pf.getNombreresponsable());
+                paciente.setIdusuario(new BigInteger(pf.getIdusuario()));
        return paciente;
     }
     
     
-    public List<PacienteForm> obtenerPacientes(){
+    public List<PacienteForm> obtenerPacientes(Integer id){
     List <TblPaciente> listaTmp;
     List <PacienteForm> listaTmpForm;
         try {
-            listaTmp = getPacientes();
+            listaTmp = getPacientes(id);
             if (listaTmp.isEmpty()) {
                 listaTmpForm = new ArrayList<PacienteForm>();
                 
@@ -124,8 +127,8 @@ public class PacienteFacade extends AbstractFacade<TblPaciente, PacienteForm>{
     }
     
     
-    public List<TblPaciente> getPacientes(){
-        Query q= getEntityManager().createNativeQuery("select * from tbl_paciente where estadopaciente='A'",TblPaciente.class);
+    public List<TblPaciente> getPacientes(Integer id){
+        Query q= getEntityManager().createNativeQuery("select * from tbl_paciente where estadopaciente='A' and idusuario =" + id,TblPaciente.class);
         List<TblPaciente> listTmp= q.getResultList();
         return listTmp.isEmpty()? new ArrayList<TblPaciente>():listTmp;
     }
